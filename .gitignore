@@ -1,0 +1,8 @@
+node_modules
+.venv
+.superpowers
+.DS_Store
+photos/
+*.MP4
+*.pdf
+Wedding Invitation Inspiration & Details.jpeg
