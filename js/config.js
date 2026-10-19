@@ -1,3 +1,5 @@
+import { mapsSearchUrl } from './maps.js';
+
 export const COUPLE = { groom: 'Ayush Salunke', bride: 'Mahima Malani', hashtag: '#AyushMahnbhava' };
 
 export const COUNTDOWN_TARGET = '2026-12-11T10:00:00+05:30';
@@ -6,7 +8,7 @@ const ADDRESS = 'The Democracy Hotel, Ashoknagar, Satpur Colony, Nashik, Maharas
 export const VENUE = {
   name: 'The Democracy Hotel',
   address: ADDRESS,
-  mapsUrl: '',
+  mapsUrl: mapsSearchUrl(ADDRESS),
 };
 
 export const EVENTS = [
