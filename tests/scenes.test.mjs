@@ -46,7 +46,7 @@ test('story plays in under a minute (autoplay, no scrolling)', () => {
 test('every scene id is unique', () => assert.equal(new Set(scenes.map(s => s.id)).size, scenes.length));
 for (const s of scenes) checkScene(s, s.id);
 
-const card = cardScene({ id: 'x-card', img: 'panel-met', w: 510, h: 278, alt: 'alt', caption: ['hi'], dur: 5,
+const card = cardScene({ id: 'x-card', img: 'panel-met', mask: 'mask-met', w: 510, h: 278, alt: 'alt', caption: ['hi'], dur: 5,
   chips: [{ text: 'Nashik', x: 100, y: 600, at: 2 }] });
 checkScene(card, 'cardScene helper');
 const full = fullScene({ id: 'x-full', art: 'assets/story/x.webp', alt: 'alt', caption: ['hi'], dur: 5, chips: [{ text: 'NYC', x: 200, y: 700, at: 2 }] });
@@ -54,6 +54,23 @@ checkScene(full, 'fullScene helper');
 test('cardScene card height follows the image aspect ratio', () => {
   const tall = cardScene({ id: 't', img: 'panel-met', w: 100, h: 200, alt: 'a', caption: ['x'], dur: 5 });
   const wide = cardScene({ id: 'w', img: 'panel-met', w: 200, h: 100, alt: 'a', caption: ['x'], dur: 5 });
-  const hOf = (s) => +s.svg.match(/class="cimg"[^>]*height="([\d.]+)"/)[1];
-  assert.ok(hOf(tall) > hOf(wide));
+  const ratio = (s) => { const [a, b] = s.svg.match(/class="cardwin"[^>]*aspect-ratio:\s*(\d+)\s*\/\s*(\d+)/).slice(1).map(Number); return a / b; };
+  assert.ok(ratio(tall) < ratio(wide));
+  assert.equal(ratio(wide), 2);
+});
+
+import { sceneIndexAt } from '../js/live.js';
+test('sceneIndexAt picks the scene whose start is the latest one not after t', () => {
+  const starts = [0, 5, 11, 17];
+  assert.equal(sceneIndexAt(starts, 0), 0);
+  assert.equal(sceneIndexAt(starts, 4.99), 0);
+  assert.equal(sceneIndexAt(starts, 5), 1);
+  assert.equal(sceneIndexAt(starts, 16.9), 2);
+  assert.equal(sceneIndexAt(starts, 99), 3);
+  assert.equal(sceneIndexAt(starts, -2), 0);
+});
+test('painted scenes reference both an image and a control mask', () => {
+  for (const s of scenes.filter(x => x.kind === 'card')) {
+    assert.ok(s.live && s.live.img.endsWith('.webp') && s.live.mask.endsWith('.png'), s.id);
+  }
 });

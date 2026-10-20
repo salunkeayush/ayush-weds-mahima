@@ -22,27 +22,25 @@ function common(chips = []) {
 }
 
 // A painted still shown as a framed card over a soft blurred copy of itself.
-export function cardScene({ id, img, w, h, alt, caption, dur, chips = [], art }) {
-  const cw = 336, ch = +(cw * h / w).toFixed(1), top = +(400 - ch / 2).toFixed(1);
+// `mask` (assets/img/<mask>.png) makes it a "living painting" (see js/live.js).
+export function cardScene({ id, img, mask, w, h, alt, caption, dur, chips = [], art }) {
   const c = common(chips);
   const src = `assets/img/${img}.webp`;
-  return {
-    id, caption, dur, art, alt, chips, kind: 'card',
-    svg: `<svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${esc(alt)}">
-      <defs><filter id="bl-${id}" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="14"/></filter>
-        <filter id="sh-${id}" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#6e1a27" flood-opacity=".32"/></filter>
-        <clipPath id="cl-${id}"><rect x="32" y="${top + 8}" width="${cw}" height="${ch}"/></clipPath></defs>
+  const back = `<svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs><filter id="bl-${id}" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="14"/></filter></defs>
       <rect width="400" height="800" fill="${CREAM}"/>
       <image class="bgimg" href="${src}" x="-260" y="0" width="920" height="800" preserveAspectRatio="xMidYMid slice" filter="url(#bl-${id})"/>
-      <rect width="400" height="800" fill="${CREAM}" opacity=".5"/>
-      <g class="card" filter="url(#sh-${id})"><rect x="24" y="${top}" width="${cw + 16}" height="${ch + 16}" rx="6" fill="#fffaf0"/>
-        <g clip-path="url(#cl-${id})"><image class="cimg" href="${src}" x="32" y="${top + 8}" width="${cw}" height="${ch}"/></g></g>
-      ${c.svg}
-    </svg>`,
+      <rect width="400" height="800" fill="${CREAM}" opacity=".5"/></svg>`;
+  const card = `<div class="cardwrap"><div class="cardbox"><div class="cardwin" style="aspect-ratio:${w}/${h}"><img class="cimg" src="${src}" alt="${esc(alt)}" width="${w}" height="${h}"></div></div></div>`;
+  const front = `<svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${c.svg}</svg>`;
+  return {
+    id, caption, dur, art, alt, chips, kind: 'card',
+    live: mask ? { img: src, mask: `assets/img/${mask}.png` } : null,
+    svg: back + card + front,
     animate(tl, t0) {
-      tl.fromTo('.card', { opacity: 0, y: 40, scale: 0.94, rotation: -1.5, svgOrigin: '200 400' },
+      tl.fromTo('.cardbox', { opacity: 0, y: 40, scale: 0.94, rotation: -1.5 },
         { opacity: 1, y: 0, scale: 1, rotation: 0, duration: 1.2, ease: 'power2.out' }, t0 + 0.1);
-      tl.fromTo('.cimg', { scale: 1, svgOrigin: '200 400' }, { scale: 1.1, duration: dur, ease: 'none' }, t0);
+      tl.fromTo('.cimg', { scale: 1 }, { scale: 1.1, duration: dur, ease: 'none' }, t0);
       tl.fromTo('.bgimg', { scale: 1.05, svgOrigin: '200 400' }, { scale: 1.18, duration: dur, ease: 'none' }, t0);
       c.chipTweens(tl, t0); c.moteTween(tl, t0, dur);
     },

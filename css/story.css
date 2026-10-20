@@ -5,7 +5,12 @@
 @media (min-width:700px){.stage-box{border-radius:24px;box-shadow:0 24px 70px rgba(110,26,39,.28)}}
 .scene{position:absolute;inset:0}
 .js .stage-box .scene:not(:first-child){visibility:hidden}
-.scene svg{width:100%;height:100%;display:block}
+.scene>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cardwrap{position:absolute;inset:0;display:grid;align-content:center;justify-items:center;padding:0 6%;pointer-events:none}
+.cardbox{width:100%;padding:2.2cqw;background:#fffaf0;border-radius:6px;box-shadow:0 10px 30px rgba(110,26,39,.32)}
+.cardwin{position:relative;width:100%;overflow:hidden}
+.cardwin img,.cardwin canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cardbox.is-live .cimg{visibility:hidden}
 .cap{position:absolute;left:6%;right:6%;top:7%;text-align:center;pointer-events:none}
 .cap--center{top:50%;transform:translateY(-50%)}
 .cap p{margin:0}

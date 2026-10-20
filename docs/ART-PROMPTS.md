@@ -30,3 +30,6 @@ Send the picture back and the five spots become tappable areas on it.
 
 ## After you generate
 Tell Claude the file names. It will resize them, register them in the manifest, check each scene on a phone, and publish.
+
+## Want even more life? Animated loops
+The site already animates the painted stills (hair and clothes sway, lights twinkle, soft camera drift). For true motion (blinking, turning heads, drifting clouds), use an image-to-video tool on each painting with a prompt like: "subtle looping motion, hair and clothes moving gently in the breeze, lights twinkling, slow camera push-in, no scene change, 5 seconds, seamless loop". Send me the MP4 files (portrait, under ~2 MB each) and I'll play them as the scene background.

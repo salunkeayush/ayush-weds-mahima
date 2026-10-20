@@ -1,5 +1,6 @@
 import baseScenes from './scenes/index.js';
 import { fullScene } from './scenes/frame.js';
+import { createLive, sceneIndexAt } from './live.js';
 
 const FADE = 0.7;
 
@@ -103,6 +104,25 @@ export async function initStory(reduced) {
   });
   tl.set({}, {}, t);
 
+  // Living paintings: one shared WebGL canvas hops into the active card.
+  const live = createLive();
+  const liveIds = new Set();
+  if (live) {
+    await Promise.all(scenes.filter(s => s.live).map(s =>
+      live.load(s.id, s.live.img, s.live.mask).then(() => liveIds.add(s.id)).catch(() => {})));
+    new IntersectionObserver(([e]) => (e.isIntersecting ? live.start() : live.stop())).observe(stageBox);
+  }
+  let shown = -1;
+  const syncLive = () => {
+    const time = tl.time();
+    const k = sceneIndexAt(starts, time + 0.35);
+    if (live && k !== shown) {
+      shown = k;
+      if (liveIds.has(scenes[k].id)) live.attach(scenes[k].id, els[k].querySelector('.cardwin'));
+    }
+    if (live) live.setProgress((time - starts[k]) / scenes[k].dur);
+  };
+
   let onDone = null, finished = false;
   const finish = () => {
     if (finished) return;
@@ -110,7 +130,7 @@ export async function initStory(reduced) {
     skipBtn.hidden = true; bar.hidden = true; end.hidden = false;
     onDone?.();
   };
-  tl.eventCallback('onUpdate', () => { barFill.style.width = `${tl.progress() * 100}%`; });
+  tl.eventCallback('onUpdate', () => { barFill.style.width = `${tl.progress() * 100}%`; syncLive(); });
   tl.eventCallback('onComplete', finish);
 
   const jumpToEnd = () => { tl.progress(1, false); finish(); };
