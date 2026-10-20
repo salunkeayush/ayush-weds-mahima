@@ -8,18 +8,21 @@
   <meta name="theme-color" content="#f6ead9">
   <meta property="og:title" content="Mahima &amp; Ayush are getting married">
   <meta property="og:description" content="Join us in Nashik, 11th &amp; 12th December 2026. #AyushMahnbhava">
-  <meta property="og:image" content="assets/img/proposal-he.webp">
+  <meta property="og:image" content="https://salunkeayush.github.io/ayush-weds-mahima/assets/og.jpg">
+  <meta property="og:url" content="https://salunkeayush.github.io/ayush-weds-mahima/">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%8D%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=Great+Vibes&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>document.documentElement.classList.add("js","is-locked")</script>
+  <noscript><style>#envelope{display:none!important}</style></noscript>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/envelope.css">
   <link rel="stylesheet" href="css/story.css">
   <link rel="stylesheet" href="css/sections.css">
 </head>
-<body class="is-locked">
+<body>
 
 <!-- ENVELOPE -->
 <div id="envelope" class="envelope" role="dialog" aria-label="Open your invitation">
@@ -278,10 +281,10 @@
         <em class="err" data-for="attending"></em>
       </fieldset>
       <div class="fld" id="count-wrap"><span>Number of people (including you)</span>
-        <div class="stepper"><button type="button" id="dec" aria-label="Fewer">−</button><input id="count" name="count" inputmode="numeric" value="1" aria-label="Number of people"><button type="button" id="inc" aria-label="More">+</button></div>
+        <div class="stepper"><button type="button" id="dec" aria-label="Fewer">−</button><input id="rsvp-count" name="count" inputmode="numeric" value="1" aria-label="Number of people"><button type="button" id="inc" aria-label="More">+</button></div>
         <em class="err" data-for="count"></em></div>
       <button class="btn btn--block" id="rsvp-send" type="submit">Send RSVP</button>
-      <p class="thanks" id="rsvp-thanks" hidden></p>
+      <p class="thanks" id="rsvp-thanks" role="status" hidden></p>
     </form>
     <div id="rsvp-embed" hidden></div>
   </div>
@@ -305,8 +308,9 @@
   <symbol id="i-mandap" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20h32M12 20c0-8 24-8 24 0M24 8v4"/><path d="M12 20v20M36 20v20M8 40h32"/><path d="M24 40c-3-4 0-8 0-8s3 4 0 8z"/></g></symbol>
 </svg>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 <script type="module" src="js/main.js"></script>
+<script nomodule>var e=document.getElementById("envelope");if(e)e.style.display="none";document.documentElement.classList.remove("is-locked")</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@ export function initRsvp() {
     box.append(f); box.hidden = false; form.hidden = true; return;
   }
   if (!isConfigured(RSVP)) document.getElementById('rsvp-stub').hidden = false;
-  const count = document.getElementById('count');
+  const count = document.getElementById('rsvp-count');
   const wrap = document.getElementById('count-wrap');
   const send = document.getElementById('rsvp-send');
   const thanks = document.getElementById('rsvp-thanks');
@@ -30,11 +30,11 @@ export function initRsvp() {
       thanks.textContent = r.clean.attending === 'yes'
         ? `Thank you, ${r.clean.name}! We can't wait to celebrate with you. A confirmation is on its way to ${r.clean.email}.`
         : `Thank you for letting us know, ${r.clean.name}. You will be missed.`;
-      thanks.hidden = false; send.hidden = true;
+      thanks.classList.remove('thanks--error'); thanks.hidden = false; send.hidden = true;
       form.querySelectorAll('input,button').forEach(el => { el.disabled = true; });
     } catch {
       busy = false; send.disabled = false; send.textContent = 'Send RSVP';
-      thanks.textContent = 'Something went wrong. Please check your connection and try again.'; thanks.hidden = false;
+      thanks.textContent = 'Something went wrong. Please check your connection and try again.'; thanks.classList.add('thanks--error'); thanks.hidden = false;
     }
   });
 }

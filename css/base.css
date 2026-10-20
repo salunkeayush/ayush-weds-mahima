@@ -9,7 +9,8 @@
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{background:var(--cream);color:var(--ink);font-family:var(--font-serif);font-size:clamp(1.05rem,1rem + .4vw,1.3rem);line-height:1.55;overflow-x:hidden}
-body.is-locked{overflow:hidden;height:100svh}
+html.is-locked body{overflow:hidden;height:100svh}
+[hidden]{display:none!important}
 img{max-width:100%;height:auto;display:block}
 .script{font-family:var(--font-script);font-weight:400;color:var(--maroon);line-height:1.15}
 .serif-i{font-style:italic;color:var(--maroon)}
@@ -28,10 +29,10 @@ img{max-width:100%;height:auto;display:block}
 .btn--block{width:100%;margin-top:1rem}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 .orn{color:var(--rose);font-size:1.4rem}
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s}
-.reveal.in{opacity:1;transform:none}
-.no-js .reveal,.reduced .reveal{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none}}
+.js .reveal{opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s}
+.js .reveal.in{opacity:1;transform:none}
+.js.reduced .reveal{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .reveal{opacity:1;transform:none}}
 .florals{position:absolute;inset:0;pointer-events:none;background:
   radial-gradient(circle at 8% 6%,var(--blush) 0 8%,transparent 9%),
   radial-gradient(circle at 14% 3%,#f4b8b8 0 5%,transparent 6%),

@@ -12,7 +12,7 @@ export function initReveal() {
     for (const k in ids) document.getElementById(ids[k]).textContent = String(t[k]).padStart(2, '0');
     if (t.done) { count.hidden = true; done.hidden = false; clearInterval(timer); }
   };
-  const start = () => { tick(); timer = setInterval(tick, 1000); };
+  const start = () => { clearInterval(timer); tick(); timer = setInterval(tick, 1000); };
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) clearInterval(timer); else if (done.hidden) start();
   });

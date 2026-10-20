@@ -29,3 +29,39 @@ test('every referenced local asset exists', () => {
   for (const m of html.matchAll(/(?:src|href)="((?:assets|css|js)\/[^"]+)"/g)) assert.ok(existsSync(new URL('../' + m[1], import.meta.url)), m[1]);
 });
 test('venue name present', () => assert.ok(html.includes('The Democracy Hotel') && VENUE.address.includes('Nashik')));
+
+// --- final-review regressions ---
+const css = readFileSync(new URL('../css/base.css', import.meta.url), 'utf8');
+test('no duplicate element ids', () => {
+  const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]);
+  const dupes = ids.filter((id, i) => ids.indexOf(id) !== i);
+  assert.deepEqual(dupes, []);
+});
+test('rsvp-ui reads the guest-count input by its own unique id', () => {
+  const ui = readFileSync(new URL('../js/rsvp-ui.js', import.meta.url), 'utf8');
+  assert.ok(html.includes('id="rsvp-count"'));
+  assert.ok(ui.includes("getElementById('rsvp-count')"));
+});
+test('JS-off guests are not trapped behind the envelope', () => {
+  assert.match(html, /<noscript>\s*<style>[^<]*#envelope\s*\{[^}]*display:\s*none/);
+  assert.equal(html.includes('<body class="is-locked">'), false); // lock is applied by JS
+});
+test('GSAP scripts are deferred so a slow CDN cannot block the envelope', () => {
+  for (const m of html.matchAll(/<script src="https:\/\/cdnjs[^>]*>/g)) assert.match(m[0], /\bdefer\b/);
+});
+test('[hidden] always wins over component display rules', () => {
+  assert.match(css, /\[hidden\]\s*\{\s*display:\s*none\s*!important/);
+});
+test('og:image is absolute and og:url is set', () => {
+  assert.match(html, /og:image" content="https:\/\/salunkeayush\.github\.io\/ayush-weds-mahima\/[^"]+\.jpg"/);
+  assert.match(html, /og:url" content="https:\/\/salunkeayush\.github\.io\/ayush-weds-mahima\/"/);
+});
+test('landscape-phone rule caps story frame height', () => {
+  const st = readFileSync(new URL('../css/story.css', import.meta.url), 'utf8');
+  assert.match(st, /orientation:\s*landscape\)\s*and\s*\(max-height:\s*500px/);
+});
+test('error message has its own non-success style and alert role', () => {
+  const ui = readFileSync(new URL('../js/rsvp-ui.js', import.meta.url), 'utf8');
+  assert.ok(ui.includes("classList.toggle('thanks--error'") || ui.includes("thanks--error"));
+  assert.match(html, /id="rsvp-thanks"[^>]*role="status"/);
+});

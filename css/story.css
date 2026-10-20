@@ -21,3 +21,10 @@
   .scene__stick{grid-auto-flow:row}
   .scene__frame{width:min(60vw,820px)}
 }
+@media (orientation:landscape) and (max-height:500px){
+  .scene__stick{gap:8px}
+  .scene__frame{width:auto;max-height:52svh}
+  .scene__frame img{max-height:52svh;width:auto;margin-inline:auto}
+  .scene__text .script{font-size:clamp(1.4rem,5vh,2.2rem)}
+  .collage{height:48svh}
+}

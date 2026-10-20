@@ -23,3 +23,9 @@ The site's RSVP form posts to a Google Form you own. Responses land in a Google 
 2. Confirm: (a) a new row appears in the Sheet, (b) you receive Google's confirmation email.
 3. If the row appears but **no email arrives**: set `USE_EMBED: true` and `EMBED_URL` to the form's `viewform?embedded=true` link in `js/config.js`. The plain Google Form is then shown in the page, and Google's receipt is guaranteed.
 4. Delete the test row from the Sheet.
+
+## Gotchas (silent failures)
+The site cannot see Google's reply, so a misconfigured form fails silently and the guest still sees "thank you". Keep these off or unset:
+- "Limit to 1 response" and any sign-in requirement (guests are not signed in).
+- Number validation on "Number of people" that rejects 0 (declines are sent as 0).
+- Do not publish while `js/config.js` still says `REPLACE_ME`.

@@ -17,11 +17,13 @@ function initReveals() {
 }
 
 initEnvelope(() => {
-  document.body.classList.remove('is-locked');
-  document.getElementById('story').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+  document.documentElement.classList.remove('is-locked');
+  let deep = null;
+  try { deep = location.hash.length > 1 ? document.querySelector(location.hash) : null; } catch { /* invalid hash */ }
+  (deep || document.getElementById('story')).scrollIntoView({ behavior: reduced || deep ? 'instant' : 'smooth' });
   window.ScrollTrigger?.refresh();
 });
-initStory(reduced);
+if (window.gsap) initStory(reduced); else addEventListener('load', () => initStory(reduced));
 initReveals();
 initReveal();
 initVenueMap();
