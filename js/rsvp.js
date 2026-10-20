@@ -29,6 +29,7 @@ export function buildBody(clean, fieldNames) {
   b.set(fieldNames.email, clean.email);
   b.set(fieldNames.attending, clean.attending === 'yes' ? 'Yes' : 'No');
   b.set(fieldNames.count, String(clean.count));
+  b.set('emailReceipt', 'true'); // Google's "send me a copy of my responses" checkbox
   return b;
 }
 

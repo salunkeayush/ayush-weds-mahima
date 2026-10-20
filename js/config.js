@@ -40,7 +40,7 @@ export const BAARAT_ARRIVAL = { name: 'Baarat Swaagat', spot: 'Hotel Entrance', 
 
 export const RSVP = {
   USE_EMBED: false,
-  FORM_ACTION_URL: 'REPLACE_ME',
-  FIELD_NAMES: { name: 'REPLACE_ME', email: 'REPLACE_ME', attending: 'REPLACE_ME', count: 'REPLACE_ME' },
-  EMBED_URL: 'REPLACE_ME',
+  FORM_ACTION_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSfdQ35mvheMZq7Uo9OSvlXBrfrx41Fied0GejkiC5ro1qRNiw/formResponse',
+  FIELD_NAMES: { name: 'entry.11974379', email: 'emailAddress', attending: 'entry.1210398458', count: 'entry.718827712' },
+  EMBED_URL: 'true',
 };

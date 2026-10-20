@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { validate, buildBody, isConfigured, submit } from '../js/rsvp.js';
 
 const ok = { name: ' Asha ', email: 'a@b.co', attending: 'yes', count: '4' };
+const placeholder = { USE_EMBED: false, FORM_ACTION_URL: 'REPLACE_ME', FIELD_NAMES: { name: 'REPLACE_ME', email: 'REPLACE_ME', attending: 'REPLACE_ME', count: 'REPLACE_ME' }, EMBED_URL: 'REPLACE_ME' };
 const real = { USE_EMBED: false, FORM_ACTION_URL: 'https://docs.google.com/forms/d/e/X/formResponse',
   FIELD_NAMES: { name: 'entry.1', email: 'entry.2', attending: 'entry.3', count: 'entry.4' }, EMBED_URL: 'x' };
 
@@ -32,15 +33,17 @@ test('buildBody maps entry keys and Yes/No', () => {
   assert.equal(b.get('entry.3'), 'Yes');
   assert.equal(b.get('entry.4'), '2');
 });
+test('buildBody asks Google to email the guest a copy', () => {
+  const b = buildBody({ name: 'A', email: 'a@b.co', attending: 'no', count: 0 }, real.FIELD_NAMES);
+  assert.equal(b.get('emailReceipt'), 'true');
+});
 test('isConfigured false for placeholders', async () => {
-  const { RSVP } = await import('../js/config.js');
-  assert.equal(isConfigured(RSVP), false);
+  assert.equal(isConfigured(placeholder), false);
   assert.equal(isConfigured(real), true);
 });
 test('submit stub makes no network call', async () => {
-  const { RSVP } = await import('../js/config.js');
   let calls = 0;
-  const r = await submit(validate(ok).clean, RSVP, async () => { calls++; });
+  const r = await submit(validate(ok).clean, placeholder, async () => { calls++; });
   assert.deepEqual(r, { ok: true, stub: true });
   assert.equal(calls, 0);
 });
@@ -50,4 +53,10 @@ test('submit real posts once with no-cors', async () => {
   assert.equal(r.ok, true); assert.equal(r.stub, false);
   assert.equal(seen.length, 1);
   assert.equal(seen[0][1].method, 'POST'); assert.equal(seen[0][1].mode, 'no-cors');
+});
+test('shipped config is fully filled in (no placeholders left)', async () => {
+  const { RSVP } = await import('../js/config.js');
+  assert.equal(isConfigured(RSVP), true);
+  assert.equal(RSVP.FIELD_NAMES.email, 'emailAddress');
+  assert.match(RSVP.FORM_ACTION_URL, /\/formResponse$/);
 });
