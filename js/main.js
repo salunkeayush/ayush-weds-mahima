@@ -23,7 +23,7 @@ initEnvelope(() => {
   (deep || document.getElementById('story')).scrollIntoView({ behavior: reduced || deep ? 'instant' : 'smooth' });
   window.ScrollTrigger?.refresh();
 });
-if (window.gsap) initStory(reduced); else addEventListener('load', () => initStory(reduced));
+if (window.gsap || reduced) initStory(reduced); else addEventListener('load', () => initStory(reduced));
 initReveals();
 initReveal();
 initVenueMap();

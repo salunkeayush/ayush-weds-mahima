@@ -84,3 +84,10 @@ Hashtag: **#AyushMahnbhava**. Family sign-off in source material: "Malani Family
 - Illustrations: no source illustration files exist except the single composite inspiration image (panels could be cropped from it). Builder may reuse cropped panels, draw SVG, or both. Wardrobe PDF pages can be reused as wardrobe card art (extract images with PyMuPDF).
 - Reel 3 (Instagram link) could not be viewed (login wall).
 - Source images/PDF are large (PDF 54 MB); the built site must stay light.
+
+## Addendum 2026-10-19: scroll-scrubbed animated story (replaces section 2 "Love story scroll")
+Hosts approved this in conversation. Inspiration: a different couple's video invite (layered cut-out pieces that move as you scroll). Must NOT copy it (no classroom/chalkboard).
+- One pinned (sticky) portrait stage (viewBox 400x800, centered; max ~450px wide on desktop) scrubbed by scroll with GSAP. Pieces are SVG drawn by the builder in the cream/blush/gold/maroon paper-cut style. Captions write themselves (left-to-right wipe).
+- Scenes: (1) title with petals; (2) evening walk home with backpacks, lamp posts light up; (3) bench at sunset, thought bubbles (his `{ }` code, her tooth), shared coffee; (4) different places: San Francisco (red bridge in fog, cable car, laptop; Ayush doing his Master's in Software Engineering) over Nashik (ghat temple, grape vines, tooth + dental mirror; Mahima a dentist); (5) 2023: plane arcs from India to the US over a globe, "2023" tag; (6) video-call glow between two phones, hearts travel the line; (7) proposal photos pinned like polaroids on a string ("He asked. She asked. We both said yes."); (8) hands meet, flower wreath blooms ("…and now, we're ready to begin a new journey… together."); (9) small New York skyline, "Next stop: New York" (they move to NYC after the wedding), then the reveal section.
+- Reduced motion / GSAP unavailable: scenes render as a normal stacked list with captions visible.
+- Everything from "Little things about us" downward is unchanged.

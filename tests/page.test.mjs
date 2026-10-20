@@ -56,9 +56,9 @@ test('og:image is absolute and og:url is set', () => {
   assert.match(html, /og:image" content="https:\/\/salunkeayush\.github\.io\/ayush-weds-mahima\/[^"]+\.jpg"/);
   assert.match(html, /og:url" content="https:\/\/salunkeayush\.github\.io\/ayush-weds-mahima\/"/);
 });
-test('landscape-phone rule caps story frame height', () => {
+test('story stage is sized from viewport height so landscape phones fit', () => {
   const st = readFileSync(new URL('../css/story.css', import.meta.url), 'utf8');
-  assert.match(st, /orientation:\s*landscape\)\s*and\s*\(max-height:\s*500px/);
+  assert.match(st, /\.stage-box\{[^}]*width:min\(100vw,50svh\)/);
 });
 test('error message has its own non-success style and alert role', () => {
   const ui = readFileSync(new URL('../js/rsvp-ui.js', import.meta.url), 'utf8');
