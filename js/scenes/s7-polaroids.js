@@ -14,6 +14,7 @@ const polaroid = (p, i) => `<g transform="translate(${p.x} ${p.y})"><g class="po
 export default {
   id: 'polaroids',
   caption: ['He asked. She asked.', 'We both said yes.'],
+  dur: 8,
   svg: `<svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs>
       <linearGradient id="g-pol" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8e8d4"/><stop offset="1" stop-color="#f1cdc4"/></linearGradient>
@@ -26,12 +27,13 @@ export default {
     <g class="confetti">${Array.from({ length: 14 }, (_, i) => `<path class="cf" d="M0 6 c-4 -3 -8 -6 -8 -10 0 -3 2 -5 4.5 -5 1.5 0 3 1 3.5 2.2 .5 -1.2 2 -2.2 3.5 -2.2 2.5 0 4.5 2 4.5 5 0 4 -4 7 -8 10z" transform="translate(${(i * 61) % 380 + 10} ${760 + (i % 3) * 20})" fill="${['#e86f93', '#f3c969', '#f2a7b3'][i % 3]}" opacity="0"/>`).join('')}</g>
   </svg>`,
   animate(tl, t0) {
-    tl.to('.string', { strokeDashoffset: 0, duration: 1.6 }, t0 + 0.6);
+    tl.to('.string', { strokeDashoffset: 0, duration: 1.2 }, t0 + 0.4);
     POL.forEach((p, i) => {
-      const at = t0 + 1.4 + i * 1.7;
-      tl.fromTo(`.pol-${i}`, { y: -520, rotation: p.rot * 4, transformOrigin: '0px 0px' }, { y: 0, rotation: p.rot, duration: 1.5, ease: 'bounce.out' }, at);
-      tl.to(`.pol-${i}`, { rotation: p.rot * -1.2, duration: 1.1, repeat: 3, yoyo: true, ease: 'sine.inOut', transformOrigin: '0px 0px' }, at + 1.6);
+      const at = t0 + 1 + i * 1.5;
+      const origin = `${p.x} ${p.y}`;
+      tl.fromTo(`.pol-${i}`, { y: -520, rotation: p.rot * 4, svgOrigin: origin }, { y: 0, rotation: p.rot, duration: 1.3, ease: 'bounce.out' }, at);
+      tl.to(`.pol-${i}`, { rotation: p.rot * -1.2, duration: 0.9, repeat: 2, yoyo: true, ease: 'sine.inOut', svgOrigin: origin }, at + 1.4);
     });
-    tl.to('.cf', { opacity: 1, y: -700, duration: 4, stagger: 0.15, ease: 'power1.out' }, t0 + 6.2);
+    tl.to('.cf', { opacity: 1, y: -700, duration: 3, stagger: 0.1, ease: 'power1.out' }, t0 + 5);
   },
 };

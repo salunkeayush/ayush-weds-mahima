@@ -59,9 +59,24 @@ test('og:image is absolute and og:url is set', () => {
 test('story stage is sized from viewport height so landscape phones fit', () => {
   const st = readFileSync(new URL('../css/story.css', import.meta.url), 'utf8');
   assert.match(st, /\.stage-box\{[^}]*width:min\(100vw,50svh\)/);
+  assert.match(st, /\.stage\{[^}]*height:100svh/);
 });
 test('error message has its own non-success style and alert role', () => {
   const ui = readFileSync(new URL('../js/rsvp-ui.js', import.meta.url), 'utf8');
   assert.ok(ui.includes("classList.toggle('thanks--error'") || ui.includes("thanks--error"));
   assert.match(html, /id="rsvp-thanks"[^>]*role="status"/);
+});
+
+test('resolveScenes: art listed in the manifest upgrades cards; optional scenes need art', async () => {
+  const { resolveScenes } = await import('../js/story.js');
+  const { default: list } = await import('../js/scenes/index.js');
+  const none = await resolveScenes(list, async () => true, async () => []);
+  assert.equal(none.some(s => s.optional), false);
+  assert.ok(none.every(s => s.kind !== 'full'));
+  const some = await resolveScenes(list, async () => true, async () => ['met.webp', 'newyork.webp']);
+  assert.equal(some.find(s => s.id === 'met').kind, 'full');
+  assert.equal(some.at(-1).id, 'newyork');
+  assert.equal(some.some(s => s.id === 'flight'), false);
+  const failedLoad = await resolveScenes(list, async () => false, async () => ['met.webp']);
+  assert.equal(failedLoad.find(s => s.id === 'met').kind, 'card');
 });

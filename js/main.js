@@ -16,14 +16,19 @@ function initReveals() {
   els.forEach(e => io.observe(e));
 }
 
-initEnvelope(() => {
-  document.documentElement.classList.remove('is-locked');
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const gsapReady = window.gsap ? Promise.resolve() : Promise.race([new Promise(r => addEventListener('load', r)), sleep(4000)]);
+const storyReady = reduced ? initStory(true) : gsapReady.then(() => initStory(false));
+
+initEnvelope(async () => {
+  const story = await storyReady;
+  const unlock = () => document.documentElement.classList.remove('is-locked');
   let deep = null;
   try { deep = location.hash.length > 1 ? document.querySelector(location.hash) : null; } catch { /* invalid hash */ }
-  (deep || document.getElementById('story')).scrollIntoView({ behavior: reduced || deep ? 'instant' : 'smooth' });
+  if (deep) { story.skip(unlock); unlock(); deep.scrollIntoView({ behavior: 'instant' }); }
+  else { scrollTo(0, 0); story.play(unlock); }
   window.ScrollTrigger?.refresh();
 });
-if (window.gsap || reduced) initStory(reduced); else addEventListener('load', () => initStory(reduced));
 initReveals();
 initReveal();
 initVenueMap();

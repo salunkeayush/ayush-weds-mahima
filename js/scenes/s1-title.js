@@ -10,6 +10,7 @@ const corner = (tx, ty, sx, sy) => `<g transform="translate(${tx} ${ty}) scale($
 export default {
   id: 'title',
   capPos: 'center',
+  dur: 5,
   caption: ['Our Love Story', 'Two hearts. One journey.'],
   svg: `<svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs><linearGradient id="g-title" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9eadb"/><stop offset="1" stop-color="#f4cfcb"/></linearGradient></defs>
@@ -17,12 +18,12 @@ export default {
     <g class="florals">${corner(0, 0, 1, 1)}${corner(400, 0, -1, 1)}${corner(0, 800, 1, -1)}${corner(400, 800, -1, -1)}</g>
     <g class="petals">${petals}</g>
     <path class="heart-orn" d="M200 590 c-16 -14 -34 -28 -34 -44 0 -12 9 -20 19 -20 8 0 14 4 15 10 1 -6 7 -10 15 -10 10 0 19 8 19 20 0 16 -18 30 -34 44z" fill="#d98c95"/>
-    <g class="scroll-hint"><text x="200" y="720" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" letter-spacing="4" fill="#b98a3c">SCROLL</text><line x1="200" y1="732" x2="200" y2="772" stroke="#b98a3c"/></g>
+    
   </svg>`,
   animate(tl, t0) {
-    tl.fromTo('.petal', { y: 0 }, { y: 900, duration: 11, stagger: 0.35 }, t0);
-    tl.fromTo('.heart-orn', { scale: 0.6, opacity: 0, transformOrigin: '200px 560px' }, { scale: 1, opacity: 1, duration: 2 }, t0 + 0.3);
-    tl.to('.scroll-hint', { opacity: 0, duration: 1.5 }, t0 + 1);
-    tl.to('.florals', { scale: 1.08, transformOrigin: '200px 400px', duration: 9 }, t0);
+    tl.fromTo('.petal', { y: 0 }, { y: 900, duration: 5.5, stagger: 0.12 }, t0);
+    tl.fromTo('.heart-orn', { scale: 0.6, opacity: 0, transformOrigin: '200px 560px' }, { scale: 1, opacity: 1, duration: 1.4 }, t0 + 0.3);
+    
+    tl.to('.florals', { scale: 1.08, svgOrigin: '200 400', duration: 5 }, t0);
   },
 };
