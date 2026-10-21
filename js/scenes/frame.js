@@ -23,7 +23,7 @@ function common(chips = []) {
 
 // A painted still shown as a framed card over a soft blurred copy of itself.
 // `mask` (assets/img/<mask>.png) makes it a "living painting" (see js/live.js).
-export function cardScene({ id, img, mask, w, h, alt, caption, dur, chips = [], art }) {
+export function cardScene({ id, img, mask, plate, layers = [], choreo, w, h, alt, caption, dur, chips = [], art }) {
   const c = common(chips);
   const src = `assets/img/${img}.webp`;
   const back = `<svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -35,14 +35,19 @@ export function cardScene({ id, img, mask, w, h, alt, caption, dur, chips = [], 
   const front = `<svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${c.svg}</svg>`;
   return {
     id, caption, dur, art, alt, chips, kind: 'card',
-    live: mask ? { img: src, mask: `assets/img/${mask}.png` } : null,
+    live: mask ? {
+      img: src, mask: `assets/img/${mask}.png`,
+      plate: plate ? `assets/img/${plate}.webp` : undefined,
+      layers: layers.map(l => ({ id: l.id, url: `assets/img/${l.file}.webp`, pivot: l.pivot, depth: l.depth })),
+    } : null,
     svg: back + card + front,
-    animate(tl, t0) {
+    animate(tl, t0, L = {}) {
       tl.fromTo('.cardbox', { opacity: 0, y: 40, scale: 0.94, rotation: -1.5 },
         { opacity: 1, y: 0, scale: 1, rotation: 0, duration: 1.2, ease: 'power2.out' }, t0 + 0.1);
       tl.fromTo('.cimg', { scale: 1 }, { scale: 1.1, duration: dur, ease: 'none' }, t0);
       tl.fromTo('.bgimg', { scale: 1.05, svgOrigin: '200 400' }, { scale: 1.18, duration: dur, ease: 'none' }, t0);
       c.chipTweens(tl, t0); c.moteTween(tl, t0, dur);
+      choreo?.(tl, t0, L);
     },
   };
 }

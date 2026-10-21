@@ -3,9 +3,14 @@ import assert from 'node:assert/strict';
 import scenes from '../js/scenes/index.js';
 import { cardScene, fullScene } from '../js/scenes/frame.js';
 
-function recorder() {
+function recorder(states = {}) {
   const targets = []; let calls = 0;
-  const rec = (sel) => { calls++; if (typeof sel === 'string') targets.push(sel); };
+  const known = new Set(Object.values(states));
+  const rec = (sel) => {
+    calls++;
+    if (typeof sel === 'string') targets.push(sel);
+    else assert.ok(known.has(sel), 'tweened an object that is not a layer state');
+  };
   return {
     targets, get calls() { return calls; },
     to: rec, from: rec, set: rec, fromTo: rec,
@@ -23,8 +28,9 @@ function checkScene(m, label) {
     assert.equal(typeof m.animate, 'function');
   });
   test(`${label}: animate() only targets elements present in its svg`, () => {
-    const r = recorder();
-    m.animate(r, 0);
+    const L = makeLayerState(m);
+    const r = recorder(L);
+    m.animate(r, 0, L);
     assert.ok(r.calls > 0, 'animate must add tweens');
     for (const sel of r.targets) {
       for (const part of sel.split(/[,\s]+/).filter(Boolean)) {
@@ -59,7 +65,8 @@ test('cardScene card height follows the image aspect ratio', () => {
   assert.equal(ratio(wide), 2);
 });
 
-import { sceneIndexAt } from '../js/live.js';
+import { sceneIndexAt, makeLayerState } from '../js/live.js';
+import { existsSync } from 'node:fs';
 test('sceneIndexAt picks the scene whose start is the latest one not after t', () => {
   const starts = [0, 5, 11, 17];
   assert.equal(sceneIndexAt(starts, 0), 0);
@@ -72,5 +79,27 @@ test('sceneIndexAt picks the scene whose start is the latest one not after t', (
 test('painted scenes reference both an image and a control mask', () => {
   for (const s of scenes.filter(x => x.kind === 'card')) {
     assert.ok(s.live && s.live.img.endsWith('.webp') && s.live.mask.endsWith('.png'), s.id);
+  }
+});
+
+test('makeLayerState gives the plate and every layer a neutral transform', () => {
+  const L = makeLayerState({ live: { layers: [{ id: 'boy' }, { id: 'girl' }] } });
+  assert.deepEqual(Object.keys(L).sort(), ['boy', 'girl', 'plate']);
+  assert.deepEqual(L.boy, { x: 0, y: 0, s: 1, r: 0, a: 1 });
+  assert.notEqual(L.boy, L.girl);
+  assert.deepEqual(makeLayerState({ live: null }), {});
+});
+test('every layer and plate file named by a scene exists on disk', () => {
+  for (const s of scenes.filter(x => x.live)) {
+    for (const f of [s.live.img, s.live.mask, s.live.plate, ...(s.live.layers || []).map(l => l.url)].filter(Boolean)) {
+      assert.ok(existsSync(new URL('../' + f, import.meta.url)), `${s.id}: ${f}`);
+    }
+  }
+});
+test('scenes with people layers: every layer is animated in', () => {
+  for (const s of scenes.filter(x => x.live?.layers?.length)) {
+    const L = makeLayerState(s); const touched = new Set();
+    s.animate({ to: t => touched.add(t), from: t => touched.add(t), fromTo: t => touched.add(t), set: t => touched.add(t), call() {}, addLabel() {}, els: () => [] }, 0, L);
+    for (const l of s.live.layers) assert.ok(touched.has(L[l.id]), `${s.id}: ${l.id} is never animated`);
   }
 });

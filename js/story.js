@@ -1,6 +1,6 @@
 import baseScenes from './scenes/index.js';
 import { fullScene } from './scenes/frame.js';
-import { createLive, sceneIndexAt } from './live.js';
+import { createLive, sceneIndexAt, makeLayerState } from './live.js';
 
 const FADE = 0.7;
 
@@ -85,6 +85,7 @@ export async function initStory(reduced) {
   const skipBtn = ui.querySelector('.story-skip'), bar = ui.querySelector('.story-bar'),
     barFill = bar.firstElementChild, end = ui.querySelector('.story-end');
 
+  const states = scenes.map(makeLayerState);
   const tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
   const starts = [];
   let t = 0;
@@ -99,7 +100,7 @@ export async function initStory(reduced) {
     el.querySelectorAll('.cap p').forEach((p, k) => {
       tl.fromTo(p, { clipPath: 'inset(-10% 100% -10% 0)' }, { clipPath: 'inset(-10% 0% -10% 0)', duration: 1.4 }, t0 + 0.5 + k * 1.5);
     });
-    s.animate(scoped(tl, el), t0);
+    s.animate(scoped(tl, el), t0, states[i]);
     t += s.dur;
   });
   tl.set({}, {}, t);
@@ -109,7 +110,7 @@ export async function initStory(reduced) {
   const liveIds = new Set();
   if (live) {
     await Promise.all(scenes.filter(s => s.live).map(s =>
-      live.load(s.id, s.live.img, s.live.mask).then(() => liveIds.add(s.id)).catch(() => {})));
+      live.load(s.id, s.live).then(() => liveIds.add(s.id)).catch(() => {})));
     new IntersectionObserver(([e]) => (e.isIntersecting ? live.start() : live.stop())).observe(stageBox);
   }
   let shown = -1;
@@ -118,7 +119,7 @@ export async function initStory(reduced) {
     const k = sceneIndexAt(starts, time + 0.35);
     if (live && k !== shown) {
       shown = k;
-      if (liveIds.has(scenes[k].id)) live.attach(scenes[k].id, els[k].querySelector('.cardwin'));
+      if (liveIds.has(scenes[k].id)) live.attach(scenes[k].id, els[k].querySelector('.cardwin'), states[k]);
     }
     if (live) live.setProgress((time - starts[k]) / scenes[k].dur);
   };
