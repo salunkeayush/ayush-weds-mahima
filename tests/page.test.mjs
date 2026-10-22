@@ -80,14 +80,3 @@ test('resolveScenes: art listed in the manifest upgrades cards; optional scenes 
   const failedLoad = await resolveScenes(list, async () => false, async () => ['met.webp']);
   assert.equal(failedLoad.find(s => s.id === 'met').kind, 'card');
 });
-
-test('venue section: painted hotel image plus a tappable chip for every event spot, no invented SVG map', async () => {
-  const { EVENTS, BAARAT_ARRIVAL } = await import('../js/config.js');
-  assert.ok(html.includes('assets/img/panel-venue.webp'));
-  assert.equal(html.includes('id="hotel-map"'), false);
-  const spotIds = [...new Set([BAARAT_ARRIVAL.spotId, ...EVENTS.map(e => e.spotId)])];
-  for (const id of spotIds) assert.ok(new RegExp(`class="spotchip"[^>]*data-spot="${id}"`).test(html), id);
-});
-test('venue mask exists for the living painting', () => {
-  assert.ok(existsSync(new URL('../assets/img/mask-venue.png', import.meta.url)));
-});

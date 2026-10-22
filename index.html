@@ -102,18 +102,60 @@
       <h2 id="venue-h" class="script h2">The Democracy Hotel</h2>
       <address>Ashoknagar, Satpur Colony,<br>Nashik, Maharashtra 422007, India</address>
       <a class="btn" id="open-maps" href="https://www.google.com/maps/search/?api=1&amp;query=The%20Democracy%20Hotel%2C%20Ashoknagar%2C%20Satpur%20Colony%2C%20Nashik%2C%20Maharashtra%20422007%2C%20India" target="_blank" rel="noopener">Open Maps</a>
+      <p class="hint">Tap a place on the map to see what happens there.</p>
+      <div class="sheet" id="venue-sheet" aria-live="polite"><p class="serif-i">Tap a spot to explore</p></div>
     </div>
-    <div class="venue__art">
-      <figure class="vframe"><div class="vwin" style="aspect-ratio:510/298"><img class="vimg" src="assets/img/panel-venue.webp" alt="Painting of The Democracy Hotel's garlanded entrance and lawn with mountains behind" width="510" height="298" loading="lazy"></div></figure>
-      <p class="hint">Tap a place to see what happens there.</p>
-      <div class="spots" role="group" aria-label="Places at the venue">
-        <button type="button" class="spotchip" data-spot="entrance" aria-pressed="false"><svg aria-hidden="true" focusable="false"><use href="#i-horse"/></svg><span><b>Hotel Entrance</b><small>Baarat arrives</small></span></button>
-        <button type="button" class="spotchip" data-spot="ganga-ghat-hall" aria-pressed="false"><svg aria-hidden="true" focusable="false"><use href="#i-kalash"/></svg><span><b>Ganga Ghat Hall</b><small>Mayra</small></span></button>
-        <button type="button" class="spotchip" data-spot="poolside-lawn" aria-pressed="false"><svg aria-hidden="true" focusable="false"><use href="#i-bowl"/></svg><span><b>Poolside Lawn</b><small>Haldi</small></span></button>
-        <button type="button" class="spotchip" data-spot="congruence-hall" aria-pressed="false"><svg aria-hidden="true" focusable="false"><use href="#i-drum"/></svg><span><b>Congruence Convention Hall</b><small>Sangeet &amp; Reception</small></span></button>
-        <button type="button" class="spotchip" data-spot="ganga-ghat-amphitheater" aria-pressed="false"><svg aria-hidden="true" focusable="false"><use href="#i-mandap"/></svg><span><b>Ganga Ghat Amphitheater</b><small>Phere &amp; Saptapati</small></span></button>
-      </div>
-      <div class="sheet" id="venue-sheet" aria-live="polite"><p class="serif-i">Tap a place to explore</p></div>
+    <div class="venue__map">
+      <svg id="hotel-map" viewBox="0 0 400 520" role="group" aria-label="Illustrated map of the hotel grounds">
+        <defs>
+          <pattern id="paper" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#f7ecda"/><circle cx="2" cy="3" r=".5" fill="#ecdcc0"/></pattern>
+        </defs>
+        <rect width="400" height="520" rx="22" fill="url(#paper)" stroke="#d9bd8a" stroke-width="2"/>
+        <!-- river -->
+        <path d="M-5 70 C80 40 140 100 220 70 S360 30 405 60 L405 -5 L-5 -5Z" fill="#cfe3e6" opacity=".8"/>
+        <text x="280" y="38" font-family="Cormorant Garamond, serif" font-style="italic" font-size="13" fill="#5b8590">Godavari</text>
+        <!-- lawn -->
+        <ellipse cx="110" cy="250" rx="95" ry="78" fill="#cfe0b8"/>
+        <!-- paths -->
+        <path d="M200 500 C200 430 190 400 200 350 S230 270 200 215 S150 140 200 120" fill="none" stroke="#e8d3a6" stroke-width="14" stroke-linecap="round"/>
+        <path d="M200 350 C260 350 300 330 330 300" fill="none" stroke="#e8d3a6" stroke-width="10" stroke-linecap="round"/>
+        <path d="M200 215 C150 215 120 230 100 245" fill="none" stroke="#e8d3a6" stroke-width="10" stroke-linecap="round"/>
+        <!-- pool & lawn deco -->
+        <g class="spot" data-spot="poolside-lawn" tabindex="0" role="button" aria-label="Poolside Lawn: Haldi">
+          <rect x="40" y="205" width="140" height="95" rx="40" fill="#b9d98f"/>
+          <rect x="62" y="228" width="80" height="44" rx="16" fill="#8fd0e4" stroke="#fff" stroke-width="3"/>
+          <path d="M70 244 q8 -6 16 0 t16 0 t16 0" fill="none" stroke="#fff" stroke-width="2"/>
+          <circle cx="160" cy="222" r="9" fill="#f6a43c"/><circle cx="52" cy="285" r="7" fill="#f6a43c"/>
+          <text x="110" y="196" class="lbl">Poolside Lawn</text>
+        </g>
+        <g class="spot" data-spot="ganga-ghat-hall" tabindex="0" role="button" aria-label="Ganga Ghat Hall: Mayra">
+          <rect x="250" y="130" width="120" height="70" rx="8" fill="#f1d5cf" stroke="#b95a5a" stroke-width="2"/>
+          <path d="M265 130 q45 -48 90 0Z" fill="#e8b7ae" stroke="#b95a5a" stroke-width="2"/>
+          <rect x="296" y="164" width="28" height="36" rx="14" fill="#7a1f2b"/>
+          <circle cx="310" cy="96" r="5" fill="#e6c98a"/>
+          <text x="310" y="222" class="lbl">Ganga Ghat Hall</text>
+        </g>
+        <g class="spot" data-spot="congruence-hall" tabindex="0" role="button" aria-label="Congruence Convention Hall: Sangeet and Reception">
+          <rect x="240" y="258" width="140" height="92" rx="10" fill="#d8c9ec" stroke="#7a5aa8" stroke-width="2"/>
+          <rect x="256" y="276" width="108" height="22" rx="4" fill="#f3ecfa"/>
+          <circle cx="278" cy="327" r="8" fill="#e6c98a"/><circle cx="310" cy="327" r="8" fill="#e6c98a"/><circle cx="342" cy="327" r="8" fill="#e6c98a"/>
+          <text x="310" y="372" class="lbl">Congruence Hall</text>
+        </g>
+        <g class="spot" data-spot="ganga-ghat-amphitheater" tabindex="0" role="button" aria-label="Ganga Ghat Amphitheater: Phere and Saptapati">
+          <path d="M70 395 a90 90 0 0 1 180 0Z" fill="#f4d3b0" stroke="#b9743c" stroke-width="2"/>
+          <path d="M100 395 a60 60 0 0 1 120 0" fill="none" stroke="#b9743c" stroke-width="2"/>
+          <path d="M126 395 a34 34 0 0 1 68 0" fill="none" stroke="#b9743c" stroke-width="2"/>
+          <rect x="146" y="372" width="28" height="23" rx="3" fill="#7a1f2b"/>
+          <text x="160" y="418" class="lbl">Ganga Ghat Amphitheater</text>
+        </g>
+        <g class="spot" data-spot="entrance" tabindex="0" role="button" aria-label="Hotel entrance: Baarat arrives">
+          <rect x="150" y="458" width="100" height="40" rx="6" fill="#efe0c2" stroke="#b98a3c" stroke-width="2"/>
+          <path d="M162 498 v-24 a38 38 0 0 1 76 0 v24" fill="none" stroke="#b98a3c" stroke-width="3"/>
+          <text x="200" y="450" class="lbl">Hotel Entrance</text>
+        </g>
+        <!-- trees -->
+        <g fill="#9fbf86"><circle cx="30" cy="140" r="16"/><circle cx="52" cy="150" r="12"/><circle cx="360" cy="440" r="18"/><circle cx="380" cy="470" r="12"/><circle cx="25" cy="470" r="16"/><circle cx="140" cy="130" r="13"/></g>
+      </svg>
     </div>
   </div>
 </section>
