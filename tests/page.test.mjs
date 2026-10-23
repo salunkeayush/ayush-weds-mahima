@@ -125,3 +125,11 @@ test('countdown section text uses the maroon of the neighbouring text (date and 
   assert.match(rule('.date'), /color:var\(--maroon\)/);
   assert.match(rule('.hashtag'), /color:var\(--maroon\)/);
 });
+
+import { assetVersion } from '../scripts/stamp.mjs';
+test('css and main.js links carry the current content hash so browsers never serve stale styles (run `npm run stamp`)', () => {
+  const v = assetVersion();
+  for (const f of ['css/base.css', 'css/envelope.css', 'css/story.css', 'css/sections.css', 'js/main.js']) {
+    assert.ok(html.includes(`${f}?v=${v}`), `${f} should be linked as ${f}?v=${v}`);
+  }
+});
