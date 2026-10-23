@@ -11,8 +11,9 @@
 .env__letter .script{font-size:clamp(1.8rem,8vw,2.6rem);color:var(--maroon)}
 .env__front{z-index:3;background:#dca5a9;clip-path:polygon(0 0,50% 56%,100% 0,100% 100%,0 100%);border-radius:8px}
 .env__flap{z-index:4;bottom:auto;height:58%;background:#d99aa0;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .8s ease,z-index 0s .4s}
-.env__seal{position:absolute;z-index:5;left:50%;top:50%;width:21%;aspect-ratio:1;transform:translate(-50%,-50%);padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3));transition:transform .4s,opacity .3s}
+.env__seal{position:absolute;z-index:5;left:50%;top:50%;width:33%;aspect-ratio:1;transform:translate(-50%,-50%);padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3));transition:transform .4s,opacity .3s}
 .env__seal{border-radius:50%}
+.env__seal img{width:100%;height:100%;display:block;border-radius:50%;box-shadow:0 0 0 3px #e6c98a,0 0 0 5px rgba(122,31,43,.55)}
 .env__seal:focus-visible{outline:3px solid var(--gold-l);outline-offset:5px}
 .env__seal:focus:not(:focus-visible){outline:none}
 .env__seal:hover{transform:translate(-50%,-50%) scale(1.07)}

@@ -76,11 +76,11 @@ test('names read "Ayush & Mahima" everywhere, never the old order', () => {
   assert.ok(html.includes('Ayush &amp; Mahima'));
   assert.match(html, /Ayush <i>&amp;<\/i> Mahima/);
 });
-test('seal monogram reads A & M in a readable serif, not the old script M&A', () => {
+test('envelope seal is the couple\'s wreath logo image', () => {
   const seal = html.match(/<button class="env__seal"[\s\S]*?<\/button>/)[0];
-  assert.match(seal, />A<[\s\S]*>&amp;<[\s\S]*>M</);
-  assert.equal(seal.includes('Great Vibes'), false);
-  assert.equal(seal.includes('M&amp;A'), false);
+  assert.match(seal, /<img[^>]*src="assets\/img\/seal\.webp"[^>]*alt="[^"]+"/);
+  assert.equal(seal.includes('<svg'), false);
+  assert.ok(existsSync(new URL('../assets/img/seal.webp', import.meta.url)));
 });
 test('script font has a clear capital A (Parisienne) and Great Vibes is gone', () => {
   assert.match(cssFile('base.css'), /--font-script:\s*'Parisienne'/);
