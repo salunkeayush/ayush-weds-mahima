@@ -97,3 +97,7 @@ test('no third-party scripts are needed any more (animation library removed)', (
 test('old story machinery is deleted', () => {
   for (const f of ['js/live.js', 'js/venue-map.js', 'js/scenes/index.js', 'assets/img/panel-met.webp']) assert.equal(existsSync(new URL('../' + f, import.meta.url)), false, f);
 });
+
+test('the "Malani Family Welcomes You" line is not on the page', () => {
+  assert.equal(/malani family/i.test(html), false);
+});
