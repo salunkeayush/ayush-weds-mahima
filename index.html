@@ -17,10 +17,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=Parisienne&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <script>document.documentElement.classList.add("js","is-locked")</script>
   <noscript><style>#envelope{display:none!important}</style></noscript>
-  <link rel="stylesheet" href="css/base.css?v=8041037e">
-  <link rel="stylesheet" href="css/envelope.css?v=8041037e">
-  <link rel="stylesheet" href="css/story.css?v=8041037e">
-  <link rel="stylesheet" href="css/sections.css?v=8041037e">
+  <link rel="stylesheet" href="css/base.css?v=68ae9fe3">
+  <link rel="stylesheet" href="css/envelope.css?v=68ae9fe3">
+  <link rel="stylesheet" href="css/story.css?v=68ae9fe3">
+  <link rel="stylesheet" href="css/sections.css?v=68ae9fe3">
 </head>
 <body>
 
@@ -127,20 +127,20 @@
       <div class="day">
         <h3 class="day__h">Friday, 11th December</h3>
         <ul class="evlist">
-          <li><button class="ev" data-event="mayra" aria-expanded="false"><span class="ev__ico ico-pink"><svg><use href="#i-kalash"/></svg></span><span class="ev__n">Mayra</span><span class="ev__t">10:00 AM</span></button></li>
-          <li><button class="ev" data-event="haldi" aria-expanded="false"><span class="ev__ico ico-gold"><svg><use href="#i-bowl"/></svg></span><span class="ev__n">Haldi</span><span class="ev__t">3:00 PM</span></button></li>
-          <li><button class="ev" data-event="sangeet" aria-expanded="false"><span class="ev__ico ico-lilac"><svg><use href="#i-drum"/></svg></span><span class="ev__n">Sangeet</span><span class="ev__t">7:30 PM</span></button></li>
+          <li><button class="ev" aria-controls="event-sheet" data-event="mayra" aria-expanded="false"><span class="ev__ico ico-pink"><svg><use href="#i-kalash"/></svg></span><span class="ev__n">Mayra</span><span class="ev__t">10:00 AM</span></button></li>
+          <li><button class="ev" aria-controls="event-sheet" data-event="haldi" aria-expanded="false"><span class="ev__ico ico-gold"><svg><use href="#i-bowl"/></svg></span><span class="ev__n">Haldi</span><span class="ev__t">3:00 PM</span></button></li>
+          <li><button class="ev" aria-controls="event-sheet" data-event="sangeet" aria-expanded="false"><span class="ev__ico ico-lilac"><svg><use href="#i-drum"/></svg></span><span class="ev__n">Sangeet</span><span class="ev__t">7:30 PM</span></button></li>
+          <li class="sheet evsheet" id="event-sheet" aria-live="polite" hidden></li>
         </ul>
       </div>
       <div class="day">
         <h3 class="day__h">Saturday, 12th December</h3>
         <ul class="evlist">
-          <li><button class="ev" data-event="reception" aria-expanded="false"><span class="ev__ico ico-sage"><svg><use href="#i-horse"/></svg></span><span class="ev__n">Baarat Swaagat &amp; Reception</span><span class="ev__t">11:00 AM onwards</span></button></li>
-          <li><button class="ev" data-event="phere" aria-expanded="false"><span class="ev__ico ico-coral"><svg><use href="#i-mandap"/></svg></span><span class="ev__n">Phere &amp; Saptapati</span><span class="ev__t">4:00 PM onwards</span></button></li>
+          <li><button class="ev" aria-controls="event-sheet" data-event="reception" aria-expanded="false"><span class="ev__ico ico-sage"><svg><use href="#i-horse"/></svg></span><span class="ev__n">Baarat Swaagat &amp; Reception</span><span class="ev__t">11:00 AM onwards</span></button></li>
+          <li><button class="ev" aria-controls="event-sheet" data-event="phere" aria-expanded="false"><span class="ev__ico ico-coral"><svg><use href="#i-mandap"/></svg></span><span class="ev__n">Phere &amp; Saptapati</span><span class="ev__t">4:00 PM onwards</span></button></li>
         </ul>
       </div>
     </div>
-    <div class="sheet sheet--wide" id="event-sheet" aria-live="polite"><p class="serif-i">Tap an event for details</p></div>
     <noscript><p>Mayra Fri 11 Dec 10:00 AM · Haldi Fri 11 Dec 3:00 PM · Sangeet Fri 11 Dec 7:30 PM · Baarat Swaagat &amp; Reception Sat 12 Dec 11:00 AM onwards · Phere &amp; Saptapati Sat 12 Dec 4:00 PM onwards</p></noscript>
   </div>
 </section>
@@ -208,7 +208,7 @@
   <symbol id="i-mandap" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20h32M12 20c0-8 24-8 24 0M24 8v4"/><path d="M12 20v20M36 20v20M8 40h32"/><path d="M24 40c-3-4 0-8 0-8s3 4 0 8z"/></g></symbol>
 </svg>
 
-<script type="module" src="js/main.js?v=8041037e"></script>
+<script type="module" src="js/main.js?v=68ae9fe3"></script>
 <script nomodule>var e=document.getElementById("envelope");if(e)e.style.display="none";document.documentElement.classList.remove("is-locked")</script>
 </body>
 </html>

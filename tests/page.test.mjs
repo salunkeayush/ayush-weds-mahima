@@ -133,3 +133,19 @@ test('css and main.js links carry the current content hash so browsers never ser
     assert.ok(html.includes(`${f}?v=${v}`), `${f} should be linked as ${f}?v=${v}`);
   }
 });
+
+import { sheetInsertIndex } from '../js/schedule.js';
+test('sheetInsertIndex puts the details right under the tapped event\'s row', () => {
+  assert.equal(sheetInsertIndex(0, 2, 3), 1);
+  assert.equal(sheetInsertIndex(1, 2, 3), 1);
+  assert.equal(sheetInsertIndex(2, 2, 3), 2);
+  assert.equal(sheetInsertIndex(0, 1, 3), 0);
+  assert.equal(sheetInsertIndex(4, 3, 5), 4);
+  assert.equal(sheetInsertIndex(0, 3, 2), 1);
+  assert.equal(sheetInsertIndex(0, 0, 2), 0); // unknown column count behaves like one column
+});
+test('event details live inside the event list (not as a block at the bottom of the section)', () => {
+  assert.match(html, /<li class="sheet evsheet" id="event-sheet"[^>]*hidden/);
+  assert.equal(html.includes('Tap an event for details'), false);
+  assert.ok(html.includes('aria-controls="event-sheet"'));
+});
