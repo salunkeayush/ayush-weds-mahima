@@ -19,6 +19,7 @@ h3{font-family:var(--font-serif);font-weight:600;color:var(--maroon);font-size:1
 .count div{background:var(--paper);border:1px solid var(--gold-l);border-radius:14px;min-width:clamp(64px,19vw,110px);padding:.7rem .3rem;box-shadow:0 8px 22px rgba(110,26,39,.1)}
 .count b{display:block;font-family:var(--font-serif);font-size:clamp(1.8rem,7vw,3rem);color:var(--maroon);font-variant-numeric:tabular-nums}
 .count span{font-family:var(--font-sans);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.hashtag{font-family:var(--font-sans);font-size:.85rem;letter-spacing:.22em;color:var(--gold);margin-top:1.4rem}
 /* venue */
 address{font-style:normal;margin-bottom:1.4rem}
 .sheet{margin-top:1rem;background:#fff9ef;border:1px solid var(--gold-l);border-radius:16px;padding:1rem 1.2rem;min-height:5.5rem;box-shadow:0 8px 24px rgba(110,26,39,.1)}

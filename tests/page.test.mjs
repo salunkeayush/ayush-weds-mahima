@@ -113,3 +113,8 @@ test('the film is trimmed to 32 seconds', () => {
   const seconds = duration / timescale;
   assert.ok(seconds >= 31.5 && seconds <= 32.5, `duration ${seconds}s`);
 });
+
+test('the hashtag appears in the countdown (reveal) section too', () => {
+  const reveal = html.match(/<section id="reveal"[\s\S]*?<\/section>/)[0];
+  assert.ok(reveal.includes('#AyushMahnbhava'));
+});
