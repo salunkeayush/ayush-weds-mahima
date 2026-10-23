@@ -3,7 +3,9 @@ node_modules
 .superpowers
 .DS_Store
 photos/
-*.MP4
+/*.MP4
+/*.mp4
+/assets/*.MP4
+/assets/*.mp4
 *.pdf
 Wedding Invitation Inspiration & Details.jpeg
-/*.mp4
