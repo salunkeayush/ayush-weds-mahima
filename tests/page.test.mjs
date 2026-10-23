@@ -101,3 +101,15 @@ test('old story machinery is deleted', () => {
 test('the "Malani Family Welcomes You" line is not on the page', () => {
   assert.equal(/malani family/i.test(html), false);
 });
+
+test('the film is trimmed to 32 seconds', () => {
+  const buf = readFileSync(new URL('../assets/video/story.mp4', import.meta.url));
+  const i = buf.indexOf('mvhd');
+  assert.ok(i > 0, 'mvhd box found');
+  const version = buf[i + 4];
+  const off = i + 4 + 4 + (version === 1 ? 16 : 8);
+  const timescale = buf.readUInt32BE(off);
+  const duration = version === 1 ? Number(buf.readBigUInt64BE(off + 4)) : buf.readUInt32BE(off + 4);
+  const seconds = duration / timescale;
+  assert.ok(seconds >= 31.5 && seconds <= 32.5, `duration ${seconds}s`);
+});
