@@ -78,7 +78,7 @@ test('names read "Ayush & Mahima" everywhere, never the old order', () => {
 });
 test('envelope seal is the couple\'s wreath logo image', () => {
   const seal = html.match(/<button class="env__seal"[\s\S]*?<\/button>/)[0];
-  assert.match(seal, /<img[^>]*src="assets\/img\/seal\.webp"[^>]*alt="[^"]+"/);
+  assert.match(seal, /<img[^>]*src="assets\/img\/seal\.webp(?:\?v=\w+)?"[^>]*alt="[^"]+"/);
   assert.equal(seal.includes('<svg'), false);
   assert.ok(existsSync(new URL('../assets/img/seal.webp', import.meta.url)));
 });
