@@ -118,3 +118,10 @@ test('the hashtag appears in the countdown (reveal) section too', () => {
   const reveal = html.match(/<section id="reveal"[\s\S]*?<\/section>/)[0];
   assert.ok(reveal.includes('#AyushMahnbhava'));
 });
+
+test('countdown section text uses the maroon of the neighbouring text (date and hashtag, no near-black ink)', () => {
+  const sec = cssFile('sections.css');
+  const rule = (sel) => sec.match(new RegExp(`\\${sel}\\{[^}]*\\}`))[0];
+  assert.match(rule('.date'), /color:var\(--maroon\)/);
+  assert.match(rule('.hashtag'), /color:var\(--maroon\)/);
+});
