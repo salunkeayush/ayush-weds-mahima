@@ -20,17 +20,7 @@ h3{font-family:var(--font-serif);font-weight:600;color:var(--maroon);font-size:1
 .count b{display:block;font-family:var(--font-serif);font-size:clamp(1.8rem,7vw,3rem);color:var(--maroon);font-variant-numeric:tabular-nums}
 .count span{font-family:var(--font-sans);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
 /* venue */
-.venue{display:grid;gap:28px}
-@media (min-width:860px){.venue{grid-template-columns:1fr 1fr;align-items:center;gap:56px}}
-address{font-style:normal;margin-bottom:1.2rem}
-.hint{margin-top:1.2rem;font-size:.95rem;opacity:.8}
-.venue__map svg{width:100%;height:auto;max-width:520px;margin-inline:auto;display:block;filter:drop-shadow(0 14px 30px rgba(110,26,39,.18))}
-.spot{cursor:pointer;transition:transform .25s;transform-box:fill-box;transform-origin:center}
-.spot:hover,.spot:focus-visible,.spot.active{transform:scale(1.06)}
-.spot.active>*:not(text){stroke:var(--maroon);stroke-width:3}
-.spot:focus-visible{outline:none}
-.spot:focus-visible>*:not(text){stroke:var(--gold);stroke-width:4}
-.lbl{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;fill:#5a2a2a;text-anchor:middle;paint-order:stroke;stroke:#f7ecda;stroke-width:3px}
+address{font-style:normal;margin-bottom:1.4rem}
 .sheet{margin-top:1rem;background:#fff9ef;border:1px solid var(--gold-l);border-radius:16px;padding:1rem 1.2rem;min-height:5.5rem;box-shadow:0 8px 24px rgba(110,26,39,.1)}
 .sheet h4{font-family:var(--font-serif);font-size:1.3rem;color:var(--maroon)}
 .sheet p{margin:.2rem 0}

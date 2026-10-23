@@ -1,157 +1,61 @@
-import baseScenes from './scenes/index.js';
-import { fullScene } from './scenes/frame.js';
-import { createLive, sceneIndexAt, makeLayerState } from './live.js';
+// The story is a short film. It plays once when the envelope opens (scroll stays locked until it ends),
+// with Skip, sound, full screen and replay. Reduced-motion guests get native controls and no autoplay.
+export function initStory(reduced) {
+  const stage = document.getElementById('story-stage');
+  const video = document.getElementById('story-video');
+  const skipBtn = document.getElementById('story-skip');
+  const soundBtn = document.getElementById('story-sound');
+  const fsBtn = document.getElementById('story-fs');
+  const bar = stage.querySelector('.story-bar');
+  const barFill = bar.firstElementChild;
+  const end = stage.querySelector('.story-end');
+  let onDone = null, finished = false, watchdog = 0;
 
-const FADE = 0.7;
-
-const canLoad = src => new Promise(res => {
-  const i = new Image();
-  i.onload = () => res(true);
-  i.onerror = () => res(false);
-  i.src = src;
-  setTimeout(() => res(false), 2500);
-});
-
-// Painted full-bleed art dropped into assets/story/ replaces a card scene;
-// optional scenes only appear when their art exists.
-async function readManifest() {
-  try { const r = await fetch('assets/story/manifest.json'); return r.ok ? await r.json() : []; } catch { return []; }
-}
-
-export async function resolveScenes(list = baseScenes, probe = canLoad, manifest = readManifest) {
-  const listed = new Set(await manifest());
-  const has = await Promise.all(list.map(s => (s.art && listed.has(s.art.split('/').pop()) ? probe(s.art) : false)));
-  const out = [];
-  list.forEach((s, i) => {
-    if (s.optional) { if (has[i]) out.push(s); return; }
-    out.push(has[i] && s.kind === 'card'
-      ? fullScene({ id: s.id, art: s.art, alt: s.alt, caption: s.caption, dur: s.dur, chips: s.chips })
-      : s);
-  });
-  return out;
-}
-
-function build(scenes, stage) {
-  stage.replaceChildren();
-  return scenes.map(s => {
-    const el = document.createElement('div');
-    el.className = `scene scene--${s.id}`;
-    el.innerHTML = s.svg;
-    const cap = document.createElement('div');
-    cap.className = `cap cap--${s.capPos || 'top'} ${s.capClass || ''}`.trim();
-    s.caption.forEach((line, i) => {
-      const p = document.createElement('p');
-      p.className = i === 0 ? 'cap__l1' : 'cap__l2';
-      p.textContent = line;
-      cap.append(p);
-    });
-    el.append(cap);
-    stage.append(el);
-    return el;
-  });
-}
-
-// Lets a scene target its own elements by class without knowing about the DOM.
-function scoped(tl, root) {
-  const R = sel => (typeof sel === 'string' ? root.querySelectorAll(sel) : sel);
-  return {
-    to: (s, v, p) => tl.to(R(s), v, p),
-    from: (s, v, p) => tl.from(R(s), v, p),
-    set: (s, v, p) => tl.set(R(s), v, p),
-    fromTo: (s, a, b, p) => tl.fromTo(R(s), a, b, p),
-    call: (fn, args, p) => tl.call(fn, args, p),
-    els: sel => root.querySelectorAll(sel),
-    addLabel: (n, p) => tl.addLabel(n, p),
-  };
-}
-
-const noop = { static: true, play: done => done?.(), skip: done => done?.(), replay() {} };
-
-export async function initStory(reduced) {
-  const section = document.getElementById('story');
-  const stageBox = section.querySelector('.stage-box');
-  const stage = section.querySelector('.stage');
-  const scenes = await resolveScenes();
-  const els = build(scenes, stageBox);
-  const { gsap } = window;
-  if (reduced || !gsap) { section.classList.add('story--static'); return noop; }
-
-  const ui = document.createElement('div');
-  ui.className = 'story-ui';
-  ui.innerHTML = `<button type="button" class="story-skip">Skip story ›</button>
-    <div class="story-bar" aria-hidden="true"><i></i></div>
-    <div class="story-end" hidden><span class="story-cue" aria-hidden="true">Scroll ↓</span><button type="button" class="story-replay">↺ Replay</button></div>`;
-  stage.append(ui);
-  const skipBtn = ui.querySelector('.story-skip'), bar = ui.querySelector('.story-bar'),
-    barFill = bar.firstElementChild, end = ui.querySelector('.story-end');
-
-  const states = scenes.map(makeLayerState);
-  const tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
-  const starts = [];
-  let t = 0;
-  scenes.forEach((s, i) => {
-    const el = els[i], t0 = t;
-    starts.push(t0);
-    tl.addLabel(`s${i}`, t0);
-    if (i > 0) {
-      tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: FADE }, t0 - FADE / 2);
-      tl.to(els[i - 1], { autoAlpha: 0, duration: FADE }, t0 - FADE / 2);
-    }
-    el.querySelectorAll('.cap p').forEach((p, k) => {
-      tl.fromTo(p, { clipPath: 'inset(-10% 100% -10% 0)' }, { clipPath: 'inset(-10% 0% -10% 0)', duration: 1.4 }, t0 + 0.5 + k * 1.5);
-    });
-    s.animate(scoped(tl, el), t0, states[i]);
-    t += s.dur;
-  });
-  tl.set({}, {}, t);
-
-  // Living paintings: one shared WebGL canvas hops into the active card.
-  const live = createLive();
-  const liveIds = new Set();
-  if (live) {
-    await Promise.all(scenes.filter(s => s.live).map(s =>
-      live.load(s.id, s.live).then(() => liveIds.add(s.id)).catch(() => {})));
-    new IntersectionObserver(([e]) => (e.isIntersecting ? live.start() : live.stop())).observe(stageBox);
-  }
-  let shown = -1;
-  const syncLive = () => {
-    const time = tl.time();
-    const k = sceneIndexAt(starts, time + 0.35);
-    if (live && k !== shown) {
-      shown = k;
-      if (liveIds.has(scenes[k].id)) live.attach(scenes[k].id, els[k].querySelector('.cardwin'), states[k]);
-    }
-    if (live) live.setProgress((time - starts[k]) / scenes[k].dur);
-  };
-
-  let onDone = null, finished = false;
   const finish = () => {
     if (finished) return;
     finished = true;
+    clearTimeout(watchdog);
+    stage.classList.add('is-done');
     skipBtn.hidden = true; bar.hidden = true; end.hidden = false;
     onDone?.();
   };
-  tl.eventCallback('onUpdate', () => { barFill.style.width = `${tl.progress() * 100}%`; syncLive(); });
-  tl.eventCallback('onComplete', finish);
-
-  const jumpToEnd = () => { tl.progress(1, false); finish(); };
-  const next = () => {
-    const now = tl.time();
-    const k = starts.findIndex(s => s > now + 0.4);
-    if (k === -1) jumpToEnd(); else tl.seek(starts[k] + 0.05, false);
+  const soundLabel = () => {
+    soundBtn.textContent = video.muted ? 'Sound on' : 'Sound off';
+    soundBtn.setAttribute('aria-pressed', String(!video.muted));
   };
-  skipBtn.addEventListener('click', e => { e.stopPropagation(); jumpToEnd(); });
-  stageBox.addEventListener('click', () => { if (!finished && !tl.paused()) next(); });
-  ui.querySelector('.story-replay').addEventListener('click', () => {
-    finished = false; end.hidden = true; skipBtn.hidden = false; bar.hidden = false;
-    document.documentElement.classList.add('is-locked');
-    section.scrollIntoView({ behavior: 'instant' });
-    tl.restart();
+  const start = async () => {
+    try { video.muted = false; await video.play(); }
+    catch { try { video.muted = true; await video.play(); } catch { finish(); return; } }
+    soundLabel();
+    watchdog = setTimeout(() => { if (video.currentTime < 0.2) finish(); }, 8000);
+  };
+
+  video.addEventListener('ended', finish);
+  video.addEventListener('error', finish);
+  video.addEventListener('timeupdate', () => { barFill.style.width = `${(video.currentTime / (video.duration || 1)) * 100}%`; });
+  video.addEventListener('click', () => { if (!finished) (video.paused ? video.play() : video.pause()); });
+  skipBtn.addEventListener('click', () => { video.pause(); finish(); });
+  soundBtn.addEventListener('click', () => { video.muted = !video.muted; soundLabel(); });
+  fsBtn.addEventListener('click', () => {
+    const go = stage.requestFullscreen || stage.webkitRequestFullscreen;
+    if (go) go.call(stage); else video.webkitEnterFullscreen?.();
   });
+  document.getElementById('story-replay').addEventListener('click', () => {
+    finished = false; stage.classList.remove('is-done');
+    end.hidden = true; skipBtn.hidden = false; bar.hidden = false;
+    document.documentElement.classList.add('is-locked');
+    document.getElementById('story').scrollIntoView({ behavior: 'instant' });
+    video.currentTime = 0;
+    start();
+  });
+  soundLabel();
 
   return {
-    static: false,
-    play(done) { onDone = done; tl.play(0); },
-    skip(done) { onDone = done; jumpToEnd(); },
+    play(done) {
+      onDone = done;
+      if (reduced) { video.controls = true; finish(); return; }
+      start();
+    },
+    skip(done) { onDone = done; video.pause(); finish(); },
   };
 }

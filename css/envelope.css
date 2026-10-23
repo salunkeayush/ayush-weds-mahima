@@ -1,4 +1,4 @@
-.envelope{display:none;position:fixed;inset:0;z-index:100;place-content:center;justify-items:center;gap:1.4rem;background:radial-gradient(circle at 50% 30%,#fbe9e4,#f2c9cc 70%);transition:opacity .9s .3s,visibility 0s 1.2s}
+.envelope{display:none;position:fixed;inset:0;z-index:100;place-content:center;justify-items:center;gap:1.4rem;background:radial-gradient(circle at 50% 30%,#fbe9e4,#f2c9cc 70%);transition:opacity .8s .2s,visibility 0s 1s}
 .js .envelope{display:grid}
 .envelope.gone{opacity:0;visibility:hidden;pointer-events:none}
 .envelope__hint{font-family:var(--font-sans);letter-spacing:.3em;text-transform:uppercase;font-size:.75rem;color:var(--maroon)}
@@ -7,14 +7,17 @@
 .env{position:relative;width:min(86vw,420px);aspect-ratio:7/5;perspective:900px}
 .env__back,.env__front,.env__flap,.env__letter{position:absolute;inset:0}
 .env__back{background:#e7b7ba;border-radius:8px;box-shadow:0 20px 50px rgba(110,26,39,.25)}
-.env__letter{inset:6% 7%;background:var(--paper);border-radius:6px;display:grid;place-content:center;text-align:center;gap:.2rem;transition:transform 1s .5s cubic-bezier(.2,.8,.2,1);z-index:2}
+.env__letter{inset:6% 7%;background:var(--paper);border-radius:6px;display:grid;place-content:start center;padding-top:9%;text-align:center;gap:.2rem;transition:transform 1s .5s cubic-bezier(.2,.8,.2,1);z-index:2}
 .env__letter .script{font-size:clamp(1.8rem,8vw,2.6rem);color:var(--maroon)}
 .env__front{z-index:3;background:#dca5a9;clip-path:polygon(0 0,50% 56%,100% 0,100% 100%,0 100%);border-radius:8px}
 .env__flap{z-index:4;bottom:auto;height:58%;background:#d99aa0;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .8s ease,z-index 0s .4s}
 .env__seal{position:absolute;z-index:5;left:50%;top:50%;width:21%;aspect-ratio:1;transform:translate(-50%,-50%);padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3));transition:transform .4s,opacity .3s}
+.env__seal{border-radius:50%}
+.env__seal:focus-visible{outline:3px solid var(--gold-l);outline-offset:5px}
+.env__seal:focus:not(:focus-visible){outline:none}
 .env__seal:hover{transform:translate(-50%,-50%) scale(1.07)}
 .envelope.open .env__seal{opacity:0;pointer-events:none}
 .envelope.open .env__flap{transform:rotateX(180deg);z-index:1}
-.envelope.open .env__letter{transform:translateY(-34%) scale(1.08)}
+.envelope.open .env__letter{transform:translateY(-52%) scale(1.08)}
 .envelope.open .envelope__tap{opacity:0}
 @media (prefers-reduced-motion:reduce){.env__flap,.env__letter,.envelope{transition-duration:.01s;transition-delay:0s}.envelope__tap{animation:none}}

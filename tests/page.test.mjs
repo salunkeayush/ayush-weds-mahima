@@ -5,6 +5,7 @@ import { EVENTS, VENUE } from '../js/config.js';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const IDS = ['envelope', 'story', 'about', 'reveal', 'venue', 'schedule', 'wardrobe', 'rsvp', 'closing'];
+const cssFile = (f) => readFileSync(new URL(`../css/${f}`, import.meta.url), 'utf8');
 
 test('has all section ids', () => { for (const id of IDS) assert.ok(html.includes(`id="${id}"`), id); });
 test('schedule buttons match config events (name, time)', () => {
@@ -46,9 +47,6 @@ test('JS-off guests are not trapped behind the envelope', () => {
   assert.match(html, /<noscript>\s*<style>[^<]*#envelope\s*\{[^}]*display:\s*none/);
   assert.equal(html.includes('<body class="is-locked">'), false); // lock is applied by JS
 });
-test('GSAP scripts are deferred so a slow CDN cannot block the envelope', () => {
-  for (const m of html.matchAll(/<script src="https:\/\/cdnjs[^>]*>/g)) assert.match(m[0], /\bdefer\b/);
-});
 test('[hidden] always wins over component display rules', () => {
   assert.match(css, /\[hidden\]\s*\{\s*display:\s*none\s*!important/);
 });
@@ -56,27 +54,46 @@ test('og:image is absolute and og:url is set', () => {
   assert.match(html, /og:image" content="https:\/\/salunkeayush\.github\.io\/ayush-weds-mahima\/[^"]+\.jpg"/);
   assert.match(html, /og:url" content="https:\/\/salunkeayush\.github\.io\/ayush-weds-mahima\/"/);
 });
-test('story stage is sized from viewport height so landscape phones fit', () => {
-  const st = readFileSync(new URL('../css/story.css', import.meta.url), 'utf8');
-  assert.match(st, /\.stage-box\{[^}]*width:min\(100vw,50svh\)/);
-  assert.match(st, /\.stage\{[^}]*height:100svh/);
-});
 test('error message has its own non-success style and alert role', () => {
   const ui = readFileSync(new URL('../js/rsvp-ui.js', import.meta.url), 'utf8');
   assert.ok(ui.includes("classList.toggle('thanks--error'") || ui.includes("thanks--error"));
   assert.match(html, /id="rsvp-thanks"[^>]*role="status"/);
 });
 
-test('resolveScenes: art listed in the manifest upgrades cards; optional scenes need art', async () => {
-  const { resolveScenes } = await import('../js/story.js');
-  const { default: list } = await import('../js/scenes/index.js');
-  const none = await resolveScenes(list, async () => true, async () => []);
-  assert.equal(none.some(s => s.optional), false);
-  assert.ok(none.every(s => s.kind !== 'full'));
-  const some = await resolveScenes(list, async () => true, async () => ['met.webp', 'newyork.webp']);
-  assert.equal(some.find(s => s.id === 'met').kind, 'full');
-  assert.equal(some.at(-1).id, 'newyork');
-  assert.equal(some.some(s => s.id === 'flight'), false);
-  const failedLoad = await resolveScenes(list, async () => false, async () => ['met.webp']);
-  assert.equal(failedLoad.find(s => s.id === 'met').kind, 'card');
+
+// --- v2: film replaces the animated story; names; fonts; venue map removed ---
+import { statSync } from 'node:fs';
+test('story is the film: autoplay-capable <video> with a poster and a compressed file', () => {
+  assert.match(html, /<video id="story-video"[^>]*poster="assets\/video\/poster\.jpg"/);
+  assert.match(html, /<source src="assets\/video\/story\.mp4" type="video\/mp4">/);
+  assert.ok(existsSync(new URL('../assets/video/story.mp4', import.meta.url)));
+  assert.ok(existsSync(new URL('../assets/video/poster.jpg', import.meta.url)));
+  assert.ok(statSync(new URL('../assets/video/story.mp4', import.meta.url)).size < 8 * 1024 * 1024, 'film must stay under 8 MB for mobile');
+  assert.ok(html.includes('id="story-skip"') && html.includes('id="story-sound"') && html.includes('id="story-fs"'));
+});
+test('names read "Ayush & Mahima" everywhere, never the old order', () => {
+  assert.equal(/Mahima\s*(?:<i>)?&amp;(?:<\/i>)?\s*Ayush/.test(html), false);
+  assert.ok(html.includes('Ayush &amp; Mahima'));
+  assert.match(html, /Ayush <i>&amp;<\/i> Mahima/);
+});
+test('seal monogram reads A & M in a readable serif, not the old script M&A', () => {
+  const seal = html.match(/<button class="env__seal"[\s\S]*?<\/button>/)[0];
+  assert.match(seal, />A<[\s\S]*>&amp;<[\s\S]*>M</);
+  assert.equal(seal.includes('Great Vibes'), false);
+  assert.equal(seal.includes('M&amp;A'), false);
+});
+test('script font has a clear capital A (Parisienne) and Great Vibes is gone', () => {
+  assert.match(cssFile('base.css'), /--font-script:\s*'Parisienne'/);
+  assert.ok(html.includes('family=Parisienne'));
+  assert.equal(html.includes('Great+Vibes'), false);
+});
+test('venue: map and tap-a-spot explorer are gone, address and Open Maps stay', () => {
+  for (const gone of ['id="hotel-map"', 'venue-sheet', 'Tap a spot', 'Tap a place', 'spotchip', 'class="spot"']) assert.equal(html.includes(gone), false, gone);
+  assert.ok(html.includes('id="open-maps"') && html.includes('422007'));
+});
+test('no third-party scripts are needed any more (animation library removed)', () => {
+  assert.equal(/<script[^>]+src="https?:/.test(html), false);
+});
+test('old story machinery is deleted', () => {
+  for (const f of ['js/live.js', 'js/venue-map.js', 'js/scenes/index.js', 'assets/img/panel-met.webp']) assert.equal(existsSync(new URL('../' + f, import.meta.url)), false, f);
 });

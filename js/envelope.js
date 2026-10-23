@@ -6,9 +6,8 @@ export function initEnvelope(onOpen) {
     if (opened) return;
     opened = true;
     env.classList.add('open');
-    setTimeout(() => { env.classList.add('gone'); onOpen(); }, 1500);
+    setTimeout(() => { env.classList.add('gone'); onOpen(); }, 2300);
   };
-  seal.focus({ preventScroll: true });
   seal.addEventListener('click', open);
   env.addEventListener('click', open);
 }

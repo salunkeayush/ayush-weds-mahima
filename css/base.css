@@ -1,7 +1,7 @@
 :root{
   --cream:#f6ead9; --paper:#fbf4e8; --blush:#f2c9cc; --rose:#d98c95; --gold:#b98a3c; --gold-l:#e6c98a;
   --maroon:#6e1a27; --ink:#3b2a2a; --sage:#9fbf86;
-  --font-script:'Great Vibes','Snell Roundhand',cursive;
+  --font-script:'Parisienne','Snell Roundhand',cursive;
   --font-serif:'Cormorant Garamond',Georgia,serif;
   --font-sans:'Inter',system-ui,sans-serif;
   --gutter:max(16px,env(safe-area-inset-left));

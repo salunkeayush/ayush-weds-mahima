@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Mahima &amp; Ayush · 11–12 December 2026</title>
-  <meta name="description" content="Mahima &amp; Ayush are getting married. Join us in Nashik, 11th &amp; 12th December 2026.">
+  <title>Ayush &amp; Mahima · 11–12 December 2026</title>
+  <meta name="description" content="Ayush &amp; Mahima are getting married. Join us in Nashik, 11th &amp; 12th December 2026.">
   <meta name="theme-color" content="#f6ead9">
-  <meta property="og:title" content="Mahima &amp; Ayush are getting married">
+  <meta property="og:title" content="Ayush &amp; Mahima are getting married">
   <meta property="og:description" content="Join us in Nashik, 11th &amp; 12th December 2026. #AyushMahnbhava">
   <meta property="og:image" content="https://salunkeayush.github.io/ayush-weds-mahima/assets/og.jpg">
   <meta property="og:url" content="https://salunkeayush.github.io/ayush-weds-mahima/">
@@ -14,7 +14,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%8D%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=Great+Vibes&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=Parisienne&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <script>document.documentElement.classList.add("js","is-locked")</script>
   <noscript><style>#envelope{display:none!important}</style></noscript>
   <link rel="stylesheet" href="css/base.css">
@@ -30,13 +30,13 @@
   <div class="env">
     <div class="env__back"></div>
     <div class="env__letter">
-      <span class="script">Mahima &amp; Ayush</span>
+      <span class="script">Ayush &amp; Mahima</span>
       <span class="serif-i">are getting married</span>
     </div>
     <div class="env__front"></div>
     <div class="env__flap"></div>
     <button class="env__seal" id="seal" aria-label="Open the invitation">
-      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#7a1f2b"/><circle cx="50" cy="50" r="38" fill="none" stroke="#e6c98a" stroke-width="1.5"/><text x="50" y="60" text-anchor="middle" font-family="Great Vibes, cursive" font-size="30" fill="#f3dcae">M&amp;A</text></svg>
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#7a1f2b"/><circle cx="50" cy="50" r="38" fill="none" stroke="#e6c98a" stroke-width="1.5"/><text x="50" y="62" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-weight="700" font-size="36" fill="#f6e1b8"><tspan>A</tspan><tspan font-family="Parisienne, cursive" font-weight="400" font-size="24" dx="2" dy="-3">&amp;</tspan><tspan dx="2" dy="3">M</tspan></text></svg>
     </button>
   </div>
   <p class="envelope__tap">Tap the seal to open</p>
@@ -44,9 +44,22 @@
 
 <main id="top">
 
-<!-- LOVE STORY -->
-<section id="story" aria-label="Our love story">
-  <div class="story-track"><div class="stage"><div class="stage-box" aria-live="off"></div></div></div>
+<!-- STORY FILM -->
+<section id="story" aria-label="Our story">
+  <div class="story-stage" id="story-stage">
+    <video id="story-video" class="story-video" playsinline preload="auto" poster="assets/video/poster.jpg" aria-label="Our story, a short film">
+      <source src="assets/video/story.mp4" type="video/mp4">
+    </video>
+    <div class="story-ui">
+      <button type="button" id="story-skip" class="story-btn story-skip">Skip ›</button>
+      <div class="story-ctrls">
+        <button type="button" id="story-sound" class="story-btn" aria-pressed="false">Sound on</button>
+        <button type="button" id="story-fs" class="story-btn">Full screen</button>
+      </div>
+      <div class="story-bar" aria-hidden="true"><i></i></div>
+      <div class="story-end" hidden><span class="story-cue" aria-hidden="true">Scroll ↓</span><button type="button" id="story-replay" class="story-btn">↺ Replay</button></div>
+    </div>
+  </div>
 </section>
 
 <!-- LITTLE THINGS -->
@@ -80,7 +93,7 @@
   <div class="florals" aria-hidden="true"></div>
   <div class="wrap center">
     <p class="eyebrow">Join us for our wedding</p>
-    <h2 id="reveal-h" class="script huge"><span>Mahima</span> <i>&amp;</i> <span>Ayush</span></h2>
+    <h2 id="reveal-h" class="script huge"><span>Ayush</span> <i>&amp;</i> <span>Mahima</span></h2>
     <p class="serif-i">are getting married</p>
     <p class="date">11<sup>th</sup> &amp; 12<sup>th</sup> December 2026</p>
     <p class="serif-i">Nashik, Maharashtra</p>
@@ -96,67 +109,11 @@
 
 <!-- VENUE -->
 <section id="venue" class="sec" aria-labelledby="venue-h">
-  <div class="wrap venue">
-    <div class="venue__info">
-      <p class="eyebrow">Venue</p>
-      <h2 id="venue-h" class="script h2">The Democracy Hotel</h2>
-      <address>Ashoknagar, Satpur Colony,<br>Nashik, Maharashtra 422007, India</address>
-      <a class="btn" id="open-maps" href="https://www.google.com/maps/search/?api=1&amp;query=The%20Democracy%20Hotel%2C%20Ashoknagar%2C%20Satpur%20Colony%2C%20Nashik%2C%20Maharashtra%20422007%2C%20India" target="_blank" rel="noopener">Open Maps</a>
-      <p class="hint">Tap a place on the map to see what happens there.</p>
-      <div class="sheet" id="venue-sheet" aria-live="polite"><p class="serif-i">Tap a spot to explore</p></div>
-    </div>
-    <div class="venue__map">
-      <svg id="hotel-map" viewBox="0 0 400 520" role="group" aria-label="Illustrated map of the hotel grounds">
-        <defs>
-          <pattern id="paper" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#f7ecda"/><circle cx="2" cy="3" r=".5" fill="#ecdcc0"/></pattern>
-        </defs>
-        <rect width="400" height="520" rx="22" fill="url(#paper)" stroke="#d9bd8a" stroke-width="2"/>
-        <!-- river -->
-        <path d="M-5 70 C80 40 140 100 220 70 S360 30 405 60 L405 -5 L-5 -5Z" fill="#cfe3e6" opacity=".8"/>
-        <text x="280" y="38" font-family="Cormorant Garamond, serif" font-style="italic" font-size="13" fill="#5b8590">Godavari</text>
-        <!-- lawn -->
-        <ellipse cx="110" cy="250" rx="95" ry="78" fill="#cfe0b8"/>
-        <!-- paths -->
-        <path d="M200 500 C200 430 190 400 200 350 S230 270 200 215 S150 140 200 120" fill="none" stroke="#e8d3a6" stroke-width="14" stroke-linecap="round"/>
-        <path d="M200 350 C260 350 300 330 330 300" fill="none" stroke="#e8d3a6" stroke-width="10" stroke-linecap="round"/>
-        <path d="M200 215 C150 215 120 230 100 245" fill="none" stroke="#e8d3a6" stroke-width="10" stroke-linecap="round"/>
-        <!-- pool & lawn deco -->
-        <g class="spot" data-spot="poolside-lawn" tabindex="0" role="button" aria-label="Poolside Lawn: Haldi">
-          <rect x="40" y="205" width="140" height="95" rx="40" fill="#b9d98f"/>
-          <rect x="62" y="228" width="80" height="44" rx="16" fill="#8fd0e4" stroke="#fff" stroke-width="3"/>
-          <path d="M70 244 q8 -6 16 0 t16 0 t16 0" fill="none" stroke="#fff" stroke-width="2"/>
-          <circle cx="160" cy="222" r="9" fill="#f6a43c"/><circle cx="52" cy="285" r="7" fill="#f6a43c"/>
-          <text x="110" y="196" class="lbl">Poolside Lawn</text>
-        </g>
-        <g class="spot" data-spot="ganga-ghat-hall" tabindex="0" role="button" aria-label="Ganga Ghat Hall: Mayra">
-          <rect x="250" y="130" width="120" height="70" rx="8" fill="#f1d5cf" stroke="#b95a5a" stroke-width="2"/>
-          <path d="M265 130 q45 -48 90 0Z" fill="#e8b7ae" stroke="#b95a5a" stroke-width="2"/>
-          <rect x="296" y="164" width="28" height="36" rx="14" fill="#7a1f2b"/>
-          <circle cx="310" cy="96" r="5" fill="#e6c98a"/>
-          <text x="310" y="222" class="lbl">Ganga Ghat Hall</text>
-        </g>
-        <g class="spot" data-spot="congruence-hall" tabindex="0" role="button" aria-label="Congruence Convention Hall: Sangeet and Reception">
-          <rect x="240" y="258" width="140" height="92" rx="10" fill="#d8c9ec" stroke="#7a5aa8" stroke-width="2"/>
-          <rect x="256" y="276" width="108" height="22" rx="4" fill="#f3ecfa"/>
-          <circle cx="278" cy="327" r="8" fill="#e6c98a"/><circle cx="310" cy="327" r="8" fill="#e6c98a"/><circle cx="342" cy="327" r="8" fill="#e6c98a"/>
-          <text x="310" y="372" class="lbl">Congruence Hall</text>
-        </g>
-        <g class="spot" data-spot="ganga-ghat-amphitheater" tabindex="0" role="button" aria-label="Ganga Ghat Amphitheater: Phere and Saptapati">
-          <path d="M70 395 a90 90 0 0 1 180 0Z" fill="#f4d3b0" stroke="#b9743c" stroke-width="2"/>
-          <path d="M100 395 a60 60 0 0 1 120 0" fill="none" stroke="#b9743c" stroke-width="2"/>
-          <path d="M126 395 a34 34 0 0 1 68 0" fill="none" stroke="#b9743c" stroke-width="2"/>
-          <rect x="146" y="372" width="28" height="23" rx="3" fill="#7a1f2b"/>
-          <text x="160" y="418" class="lbl">Ganga Ghat Amphitheater</text>
-        </g>
-        <g class="spot" data-spot="entrance" tabindex="0" role="button" aria-label="Hotel entrance: Baarat arrives">
-          <rect x="150" y="458" width="100" height="40" rx="6" fill="#efe0c2" stroke="#b98a3c" stroke-width="2"/>
-          <path d="M162 498 v-24 a38 38 0 0 1 76 0 v24" fill="none" stroke="#b98a3c" stroke-width="3"/>
-          <text x="200" y="450" class="lbl">Hotel Entrance</text>
-        </g>
-        <!-- trees -->
-        <g fill="#9fbf86"><circle cx="30" cy="140" r="16"/><circle cx="52" cy="150" r="12"/><circle cx="360" cy="440" r="18"/><circle cx="380" cy="470" r="12"/><circle cx="25" cy="470" r="16"/><circle cx="140" cy="130" r="13"/></g>
-      </svg>
-    </div>
+  <div class="wrap center">
+    <p class="eyebrow">Venue</p>
+    <h2 id="venue-h" class="script h2">The Democracy Hotel</h2>
+    <address>Ashoknagar, Satpur Colony,<br>Nashik, Maharashtra 422007, India</address>
+    <a class="btn" id="open-maps" href="https://www.google.com/maps/search/?api=1&amp;query=The%20Democracy%20Hotel%2C%20Ashoknagar%2C%20Satpur%20Colony%2C%20Nashik%2C%20Maharashtra%20422007%2C%20India" target="_blank" rel="noopener">Open Maps</a>
   </div>
 </section>
 
@@ -237,7 +194,7 @@
 <!-- CLOSING -->
 <footer id="closing" class="closing">
   <p class="serif-i">We can't wait to celebrate with you!</p>
-  <p class="script huge">Mahima <i>&amp;</i> Ayush</p>
+  <p class="script huge">Ayush <i>&amp;</i> Mahima</p>
   <p class="tag">#AyushMahnbhava</p>
   <p class="small">Malani Family Welcomes You</p>
 </footer>
@@ -254,7 +211,5 @@
 
 <script type="module" src="js/main.js"></script>
 <script nomodule>var e=document.getElementById("envelope");if(e)e.style.display="none";document.documentElement.classList.remove("is-locked")</script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 </body>
 </html>

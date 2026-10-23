@@ -1,4 +1,4 @@
-"""Resize photos, crop inspiration panels, render wardrobe pages -> optimized WebP.
+"""Resize photos, render wardrobe pages -> optimized WebP.
 Run with a venv that has pillow + pymupdf:  python scripts/prepare_assets.py
 """
 import io
@@ -23,17 +23,7 @@ PHOTOS = {  # beat name -> source (relative to photos/)
     "coastal": "normal photos/C08F869B-396D-44DF-A4E6-CA23287F70ED_1_105_c.jpeg",
     "snow": "normal photos/D7CAF37E-4164-4661-ABE1-F7BC68043C87_1_105_c.jpeg",
 }
-PANELS = {  # name -> (left, top, right, bottom) in the 1024x1490 inspiration image
-    "panel-met": (514, 0, 1024, 278),
-    "panel-grew": (0, 282, 512, 508),
-    "panel-apart": (514, 282, 1024, 508),
-    "panel-distance": (0, 510, 512, 737),
-    "panel-hands": (514, 510, 1024, 737),
-    "panel-venue": (514, 740, 1024, 1038),
-    "panel-title": (0, 0, 512, 278),
-}
 MAX_EDGE = 1600
-INSPO = ROOT / "Wedding Invitation Inspiration & Details.jpeg"
 
 
 def save(img, path, quality=78):
@@ -46,9 +36,6 @@ def save(img, path, quality=78):
 def main():
     for name, rel in PHOTOS.items():
         save(Image.open(ROOT / "photos" / rel), OUT / f"{name}.webp")
-    inspo = Image.open(INSPO)
-    for name, box in PANELS.items():
-        save(inspo.crop(box), OUT / f"{name}.webp", 85)
     doc = pymupdf.open(ROOT / "Malani wadrobe planner.pdf")
     for i, page in enumerate(doc, 1):
         pix = page.get_pixmap(dpi=110)
