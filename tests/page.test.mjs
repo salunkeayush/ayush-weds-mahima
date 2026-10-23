@@ -149,3 +149,9 @@ test('event details live inside the event list (not as a block at the bottom of 
   assert.equal(html.includes('Tap an event for details'), false);
   assert.ok(html.includes('aria-controls="event-sheet"'));
 });
+
+test('Baarat Swaagat & Reception uses a varmala (garland) icon, not the horse', () => {
+  assert.match(html, /data-event="reception"[\s\S]*?<use href="#i-varmala"\/>/);
+  assert.ok(html.includes('<symbol id="i-varmala"'));
+  assert.equal(html.includes('i-horse'), false);
+});
