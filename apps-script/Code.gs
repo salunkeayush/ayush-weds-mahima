@@ -1,7 +1,9 @@
 /**
  * RSVP backend for the Ayush & Mahima wedding site.
- * Paste into the Google Sheet's Apps Script (Extensions > Apps Script), then Deploy > New deployment > Web app
- * (Execute as: Me, Who has access: Anyone). Each RSVP becomes a row in the "RSVPs" tab and the guest gets an email.
+ * Create a new project at https://script.google.com, paste this file, run `setup` once (it creates the "Wedding RSVPs"
+ * Sheet in your Drive and asks for permission), then Deploy > New deployment > Web app
+ * (Execute as: Me, Who has access: Anyone). Each RSVP becomes a row in the Sheet's "RSVPs" tab and the guest gets an email.
+ * It also works when pasted into a Sheet's own Extensions > Apps Script (then that Sheet is used).
  */
 var SHEET_NAME = 'RSVPs';
 var MAX_GUESTS = 20;
@@ -74,8 +76,26 @@ function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
+function getSpreadsheet_() {
+  var active = SpreadsheetApp.getActiveSpreadsheet(); // set when the script lives inside a Sheet
+  if (active) return active;
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('SHEET_ID');
+  if (id) { try { return SpreadsheetApp.openById(id); } catch (err) { /* deleted: create a fresh one */ } }
+  var ss = SpreadsheetApp.create('Wedding RSVPs');
+  props.setProperty('SHEET_ID', ss.getId());
+  return ss;
+}
+
+/** Run this once from the editor: creates the Sheet, asks for permissions and logs the Sheet's address. */
+function setup() {
+  var ss = getSpreadsheet_();
+  Logger.log('RSVPs will be saved in: ' + ss.getUrl());
+  MailApp.getRemainingDailyQuota();
+}
+
 function appendRow_(d) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = getSpreadsheet_();
   var sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
   if (sh.getLastRow() === 0) {
     sh.appendRow(['Time', 'Name', 'Email', 'Attending', 'People', 'Link']);
