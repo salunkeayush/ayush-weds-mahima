@@ -58,3 +58,12 @@ test('every local asset the variant page links exists', () => {
     assert.ok(existsSync(new URL('../invite/' + m[1], import.meta.url)), m[1]);
   }
 });
+
+test('the schedule tells guests they can tap an event icon for details (both links)', () => {
+  for (const f of ['index.html', 'invite/index.html']) {
+    const h = read(f);
+    const sched = h.match(/<section id="schedule"[\s\S]*?<\/section>/)[0];
+    assert.match(sched, /<p class="sched-hint">Tap an event icon to explore more details about it\.<\/p>/, f);
+    assert.ok(sched.indexOf('sched-hint') < sched.indexOf('class="days"'), 'hint sits above the events');
+  }
+});

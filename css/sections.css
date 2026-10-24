@@ -32,6 +32,7 @@ address{font-style:normal;margin-bottom:1.4rem}
 @keyframes sheet-in{from{opacity:0;transform:translateY(-8px)}}
 @media (prefers-reduced-motion:reduce){.evsheet{animation:none}}
 /* schedule */
+.sched-hint{margin:-.2rem 0 1.6rem;font-style:italic;color:var(--maroon);opacity:.85}
 .days{display:grid;gap:34px}
 @media (min-width:860px){.days{grid-template-columns:3fr 2fr}}
 .day__h{font-family:var(--font-sans);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
