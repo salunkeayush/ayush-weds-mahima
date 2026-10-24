@@ -106,16 +106,17 @@ function appendRow_(d) {
 
 function sendConfirmation_(d) {
   try {
-    if (MailApp.getRemainingDailyQuota() < 1) return false;
+    if (MailApp.getRemainingDailyQuota() < 1) return { sent: false, why: 'quota' };
     var cache = CacheService.getScriptCache();
     var key = 'mail:' + d.email;
-    if (cache.get(key)) return false; // same address within 10 minutes: record it, do not email again
+    if (cache.get(key)) return { sent: false, why: 'recent' }; // same address within 10 minutes: recorded, not emailed again
     var m = buildEmail(d);
     MailApp.sendEmail({ to: d.email, subject: m.subject, body: m.text, htmlBody: m.html, name: 'Ayush & Mahima' });
     cache.put(key, '1', 600);
-    return true;
+    return { sent: true, why: 'sent' };
   } catch (err) {
-    return false;
+    console.error('confirmation email failed: ' + err); // visible under Executions in the Apps Script editor
+    return { sent: false, why: 'error' };
   }
 }
 
@@ -127,7 +128,8 @@ function doPost(e) {
     var lock = LockService.getScriptLock();
     lock.waitLock(15000);
     try { appendRow_(v.data); } finally { lock.releaseLock(); }
-    return json_({ ok: true, emailed: sendConfirmation_(v.data) });
+    var mail = sendConfirmation_(v.data);
+    return json_({ ok: true, emailed: mail.sent, emailWhy: mail.why });
   } catch (err) {
     return json_({ ok: false, error: 'server' });
   }
@@ -138,5 +140,5 @@ function doGet() {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = { validateRsvp: validateRsvp, buildEmail: buildEmail, EVENTS: EVENTS, eventsForVariant: eventsForVariant };
+  module.exports = { validateRsvp: validateRsvp, buildEmail: buildEmail, EVENTS: EVENTS, eventsForVariant: eventsForVariant, sendConfirmation_: sendConfirmation_ };
 }

@@ -49,3 +49,27 @@ test('the script\'s event list is the same as the website\'s (names, spots, time
     assert.deepEqual(script, site, variant);
   }
 });
+
+// --- confirmation email outcome is reported, not swallowed ---
+function runWith(globals) {
+  const sandbox = { module: { exports: {} }, console: { error() {} }, ...globals };
+  vm.runInNewContext(code, sandbox);
+  return sandbox.module.exports;
+}
+const d = { name: 'Asha', email: 'asha@example.com', attending: 'Yes', count: 2, variant: 'full' };
+const mkCache = (hit) => ({ getScriptCache: () => ({ get: () => (hit ? '1' : null), put() {} }) });
+
+test('sendConfirmation_: sends and reports sent', () => {
+  const sent = [];
+  const x = runWith({ MailApp: { getRemainingDailyQuota: () => 50, sendEmail: m => sent.push(m) }, CacheService: mkCache(false) });
+  assert.deepEqual(JSON.parse(JSON.stringify(x.sendConfirmation_(d))), { sent: true, why: 'sent' });
+  assert.equal(sent.length, 1); assert.equal(sent[0].to, 'asha@example.com');
+});
+test('sendConfirmation_: says why nothing was sent (quota, recent duplicate, error)', () => {
+  const q = runWith({ MailApp: { getRemainingDailyQuota: () => 0, sendEmail() { throw new Error('no'); } }, CacheService: mkCache(false) });
+  assert.equal(q.sendConfirmation_(d).why, 'quota');
+  const r = runWith({ MailApp: { getRemainingDailyQuota: () => 5, sendEmail() { throw new Error('no'); } }, CacheService: mkCache(true) });
+  assert.equal(r.sendConfirmation_(d).why, 'recent');
+  const e = runWith({ MailApp: { getRemainingDailyQuota: () => 5, sendEmail() { throw new Error('Authorization is required'); } }, CacheService: mkCache(false) });
+  assert.deepEqual(JSON.parse(JSON.stringify(e.sendConfirmation_(d))), { sent: false, why: 'error' });
+});

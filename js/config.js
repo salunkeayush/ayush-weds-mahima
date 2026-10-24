@@ -50,7 +50,7 @@ export const BAARAT_ARRIVAL = { name: 'Baarat Swaagat', spot: 'Hotel Entrance', 
 export const RSVP = {
   // Paste the Apps Script web-app URL here (see docs/RSVP-SETUP.md) to switch on the themed form.
   // Until then the real Google Form is embedded.
-  SCRIPT_URL: 'REPLACE_ME',
+  SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzu5O3wcFh3W9VvxJ7s8mSpP-Q50frvvm1jdQOXOzih-Zazgr-084OdXnUHc917x4qObw/exec',
   EMBED_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSfdQ35mvheMZq7Uo9OSvlXBrfrx41Fied0GejkiC5ro1qRNiw/viewform?embedded=true',
   FORM_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSfdQ35mvheMZq7Uo9OSvlXBrfrx41Fied0GejkiC5ro1qRNiw/viewform',
 };

@@ -76,3 +76,8 @@ test('shipped config keeps the Google Form as the fallback', async () => {
   assert.match(RSVP.EMBED_URL, /^https:\/\/docs\.google\.com\/forms\/d\/e\/[\w-]+\/viewform\?embedded=true$/);
   assert.match(RSVP.FORM_URL, /^https:\/\/docs\.google\.com\/forms\/d\/e\/[\w-]+\/viewform$/);
 });
+
+test('the shipped site uses the themed form (Apps Script URL is set)', async () => {
+  const { RSVP } = await import('../js/config.js');
+  assert.equal(rsvpMode(RSVP), 'script');
+});
