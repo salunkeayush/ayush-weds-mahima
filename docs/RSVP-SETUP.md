@@ -29,3 +29,12 @@ The site cannot see Google's reply, so a misconfigured form fails silently and t
 - "Limit to 1 response" and any sign-in requirement (guests are not signed in).
 - Number validation on "Number of people" that rejects 0 (declines are sent as 0).
 - Do not publish while `js/config.js` still says `REPLACE_ME`.
+
+## Why RSVPs were not recorded (read this if the Sheet stays empty)
+Guests are not signed in to Google, so the form must allow anonymous replies. In the form: **Settings → Responses**
+- **Collect email addresses: Responder input** (NOT "Verified": Verified forces a Google sign-in, so every outside reply is rejected with HTTP 401 and the embed shows "You must sign in").
+- **Send responders a copy of their response: Always** (or "When requested").
+- **Limit to 1 response: OFF** (it also forces sign-in).
+- No "Restrict to users in <organisation>".
+Test in a private/incognito window with no Google login: submit, then check the Sheet and the confirmation email.
+The site embeds Google's own form (js/config.js `USE_EMBED: true`) because Google blocks direct posts from other websites.

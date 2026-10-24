@@ -14,8 +14,8 @@ test('five events in spec order with exact times and spots', () => {
     ['mayra', '10:00 AM', 'Ganga Ghat Hall', '2026-12-11'],
     ['haldi', '3:00 PM', 'Poolside Lawn', '2026-12-11'],
     ['sangeet', '7:30 PM', 'Congruence Convention Hall', '2026-12-11'],
-    ['reception', '11:00 AM onwards', 'Congruence Convention Hall', '2026-12-12'],
-    ['phere', '4:00 PM onwards', 'Ganga Ghat Amphitheater', '2026-12-12'],
+    ['reception', '11:00 AM', 'Congruence Convention Hall', '2026-12-12'],
+    ['phere', '4:00 PM', 'Ganga Ghat Amphitheater', '2026-12-12'],
   ]);
 });
 test('palettes only for haldi and reception', () =>

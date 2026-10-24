@@ -25,12 +25,12 @@ export const EVENTS = [
     dressCode: 'Glam, sparkle & shine (Indo-western & party outfits).', palette: [],
     blurb: 'A night of music and dance' },
   { id: 'reception', startISO: '2026-12-12T11:00:00+05:30', name: 'Baarat Swaagat & Reception', date: 'Saturday, 12th December', dateISO: '2026-12-12',
-    time: '11:00 AM onwards', spot: 'Congruence Convention Hall', spotId: 'congruence-hall',
+    time: '11:00 AM', spot: 'Congruence Convention Hall', spotId: 'congruence-hall',
     dressCode: 'Royal Indian attire (timeless saris, elegant lehengas, classic sherwanis).',
     palette: ['#E8DDE0', '#D5E3D3', '#E5C7D2', '#A8D1B5', '#B79ACB', '#7FA7D9', '#5F7F68'], paletteName: 'Pastel & Pearl',
     blurb: 'The baarat arrives, the celebration begins' },
   { id: 'phere', startISO: '2026-12-12T16:00:00+05:30', name: 'Phere & Saptapati', date: 'Saturday, 12th December', dateISO: '2026-12-12',
-    time: '4:00 PM onwards', spot: 'Ganga Ghat Amphitheater', spotId: 'ganga-ghat-amphitheater',
+    time: '4:00 PM', spot: 'Ganga Ghat Amphitheater', spotId: 'ganga-ghat-amphitheater',
     dressCode: 'Indian traditional (lehenga, sharara, saree, anarkali, kurta).', palette: [],
     blurb: 'Seven steps, seven promises' },
 ];
@@ -48,8 +48,8 @@ export const COUNTDOWN_TARGET = countdownTargetFor('full');
 export const BAARAT_ARRIVAL = { name: 'Baarat Swaagat', spot: 'Hotel Entrance', spotId: 'entrance' };
 
 export const RSVP = {
-  USE_EMBED: false,
+  USE_EMBED: true, // Google refuses direct posts from other sites (reCAPTCHA, HTTP 401), so the real Google Form is embedded
   FORM_ACTION_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSfdQ35mvheMZq7Uo9OSvlXBrfrx41Fied0GejkiC5ro1qRNiw/formResponse',
   FIELD_NAMES: { name: 'entry.11974379', email: 'emailAddress', attending: 'entry.1210398458', count: 'entry.718827712' },
-  EMBED_URL: 'true',
+  EMBED_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSfdQ35mvheMZq7Uo9OSvlXBrfrx41Fied0GejkiC5ro1qRNiw/viewform?embedded=true',
 };

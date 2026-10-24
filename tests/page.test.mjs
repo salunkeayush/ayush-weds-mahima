@@ -155,3 +155,9 @@ test('Baarat Swaagat & Reception uses a varmala (garland) icon, not the horse', 
   assert.ok(html.includes('<symbol id="i-varmala"'));
   assert.equal(html.includes('i-horse'), false);
 });
+
+test('RSVP section offers a plain link to the Google Form when the embed cannot load', () => {
+  const rsvp = html.match(/<section id="rsvp"[\s\S]*?<\/section>/)[0];
+  assert.match(rsvp, /<a [^>]*id="rsvp-open"[^>]*href="https:\/\/docs\.google\.com\/forms\/d\/e\/[\w-]+\/viewform"[^>]*target="_blank"/);
+  assert.match(rsvp, /<noscript>[\s\S]*viewform/);
+});

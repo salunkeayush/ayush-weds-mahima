@@ -60,3 +60,11 @@ test('shipped config is fully filled in (no placeholders left)', async () => {
   assert.equal(RSVP.FIELD_NAMES.email, 'emailAddress');
   assert.match(RSVP.FORM_ACTION_URL, /\/formResponse$/);
 });
+
+test('RSVP uses Google\'s own embedded form (direct posts are refused with 401 by Google\'s reCAPTCHA)', async () => {
+  const { RSVP } = await import('../js/config.js');
+  assert.equal(RSVP.USE_EMBED, true);
+  assert.match(RSVP.EMBED_URL, /^https:\/\/docs\.google\.com\/forms\/d\/e\/[\w-]+\/viewform\?embedded=true$/);
+  const id = u => u.match(/\/e\/([\w-]+)\//)[1];
+  assert.equal(id(RSVP.EMBED_URL), id(RSVP.FORM_ACTION_URL), 'embed and action point at the same form');
+});
