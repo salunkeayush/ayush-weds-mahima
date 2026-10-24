@@ -48,8 +48,9 @@ export const COUNTDOWN_TARGET = countdownTargetFor('full');
 export const BAARAT_ARRIVAL = { name: 'Baarat Swaagat', spot: 'Hotel Entrance', spotId: 'entrance' };
 
 export const RSVP = {
-  USE_EMBED: true, // Google refuses direct posts from other sites (reCAPTCHA, HTTP 401), so the real Google Form is embedded
-  FORM_ACTION_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSfdQ35mvheMZq7Uo9OSvlXBrfrx41Fied0GejkiC5ro1qRNiw/formResponse',
-  FIELD_NAMES: { name: 'entry.11974379', email: 'emailAddress', attending: 'entry.1210398458', count: 'entry.718827712' },
+  // Paste the Apps Script web-app URL here (see docs/RSVP-SETUP.md) to switch on the themed form.
+  // Until then the real Google Form is embedded.
+  SCRIPT_URL: 'REPLACE_ME',
   EMBED_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSfdQ35mvheMZq7Uo9OSvlXBrfrx41Fied0GejkiC5ro1qRNiw/viewform?embedded=true',
+  FORM_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSfdQ35mvheMZq7Uo9OSvlXBrfrx41Fied0GejkiC5ro1qRNiw/viewform',
 };

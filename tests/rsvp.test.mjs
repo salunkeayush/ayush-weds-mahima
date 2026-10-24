@@ -1,11 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { validate, buildBody, isConfigured, submit } from '../js/rsvp.js';
+import { validate, buildPayload, rsvpMode, submitToScript } from '../js/rsvp.js';
 
 const ok = { name: ' Asha ', email: 'a@b.co', attending: 'yes', count: '4' };
-const placeholder = { USE_EMBED: false, FORM_ACTION_URL: 'REPLACE_ME', FIELD_NAMES: { name: 'REPLACE_ME', email: 'REPLACE_ME', attending: 'REPLACE_ME', count: 'REPLACE_ME' }, EMBED_URL: 'REPLACE_ME' };
-const real = { USE_EMBED: false, FORM_ACTION_URL: 'https://docs.google.com/forms/d/e/X/formResponse',
-  FIELD_NAMES: { name: 'entry.1', email: 'entry.2', attending: 'entry.3', count: 'entry.4' }, EMBED_URL: 'x' };
+const SCRIPT = 'https://script.google.com/macros/s/AKfycbxExample123/exec';
+const cfg = (over = {}) => ({ SCRIPT_URL: SCRIPT, EMBED_URL: 'https://docs.google.com/forms/d/e/X/viewform?embedded=true', FORM_URL: 'https://docs.google.com/forms/d/e/X/viewform', ...over });
 
 test('blank name rejected', () => assert.ok(validate({ ...ok, name: '   ' }).errors.name));
 test('bad emails rejected, good accepted', () => {
@@ -27,44 +26,53 @@ test('no with blank count ok, count 0', () => {
   assert.equal(r.ok, true);
   assert.equal(r.clean.count, 0);
 });
-test('buildBody maps entry keys and Yes/No', () => {
-  const b = buildBody({ name: 'A', email: 'a@b.co', attending: 'yes', count: 2 }, real.FIELD_NAMES);
-  assert.equal(b.get('entry.1'), 'A');
-  assert.equal(b.get('entry.3'), 'Yes');
-  assert.equal(b.get('entry.4'), '2');
-});
-test('buildBody asks Google to email the guest a copy', () => {
-  const b = buildBody({ name: 'A', email: 'a@b.co', attending: 'no', count: 0 }, real.FIELD_NAMES);
-  assert.equal(b.get('emailReceipt'), 'true');
-});
-test('isConfigured false for placeholders', async () => {
-  assert.equal(isConfigured(placeholder), false);
-  assert.equal(isConfigured(real), true);
-});
-test('submit stub makes no network call', async () => {
-  let calls = 0;
-  const r = await submit(validate(ok).clean, placeholder, async () => { calls++; });
-  assert.deepEqual(r, { ok: true, stub: true });
-  assert.equal(calls, 0);
-});
-test('submit real posts once with no-cors', async () => {
-  const seen = [];
-  const r = await submit(validate(ok).clean, real, async (u, o) => { seen.push([u, o]); return {}; });
-  assert.equal(r.ok, true); assert.equal(r.stub, false);
-  assert.equal(seen.length, 1);
-  assert.equal(seen[0][1].method, 'POST'); assert.equal(seen[0][1].mode, 'no-cors');
-});
-test('shipped config is fully filled in (no placeholders left)', async () => {
-  const { RSVP } = await import('../js/config.js');
-  assert.equal(isConfigured(RSVP), true);
-  assert.equal(RSVP.FIELD_NAMES.email, 'emailAddress');
-  assert.match(RSVP.FORM_ACTION_URL, /\/formResponse$/);
+
+test('rsvpMode: a real Apps Script URL means the themed form; anything else falls back to the Google Form embed', () => {
+  assert.equal(rsvpMode(cfg()), 'script');
+  assert.equal(rsvpMode(cfg({ SCRIPT_URL: 'REPLACE_ME' })), 'embed');
+  assert.equal(rsvpMode(cfg({ SCRIPT_URL: '' })), 'embed');
+  assert.equal(rsvpMode(cfg({ SCRIPT_URL: 'https://evil.example/exec' })), 'embed');
 });
 
-test('RSVP uses Google\'s own embedded form (direct posts are refused with 401 by Google\'s reCAPTCHA)', async () => {
+test('buildPayload: Yes/No wording, numeric count, which link the guest used, empty honeypot', () => {
+  const yes = buildPayload(validate(ok).clean, 'core');
+  assert.deepEqual(yes, { name: 'Asha', email: 'a@b.co', attending: 'Yes', count: 4, variant: 'core', website: '' });
+  const no = buildPayload(validate({ ...ok, attending: 'no', count: '' }).clean, undefined);
+  assert.equal(no.attending, 'No'); assert.equal(no.count, 0); assert.equal(no.variant, 'full');
+});
+
+test('submitToScript posts one text/plain JSON request (no CORS preflight) and reads the verdict', async () => {
+  const seen = [];
+  const fake = async (url, opts) => { seen.push([url, opts]); return { ok: true, json: async () => ({ ok: true, emailed: true }) }; };
+  const r = await submitToScript(buildPayload(validate(ok).clean, 'full'), cfg(), fake);
+  assert.deepEqual(r, { ok: true, emailed: true });
+  assert.equal(seen.length, 1);
+  assert.equal(seen[0][0], SCRIPT);
+  assert.equal(seen[0][1].method, 'POST');
+  assert.match(seen[0][1].headers['Content-Type'], /^text\/plain/);
+  assert.equal(JSON.parse(seen[0][1].body).attending, 'Yes');
+});
+test('submitToScript: the server refusing the RSVP is a failure, never a thank-you', async () => {
+  const fake = async () => ({ ok: true, json: async () => ({ ok: false, error: 'email' }) });
+  assert.deepEqual(await submitToScript(buildPayload(validate(ok).clean), cfg(), fake), { ok: false, error: 'email' });
+});
+test('submitToScript: network error or non-JSON reply is a failure', async () => {
+  const boom = async () => { throw new Error('offline'); };
+  assert.equal((await submitToScript(buildPayload(validate(ok).clean), cfg(), boom)).ok, false);
+  const html = async () => ({ ok: true, json: async () => { throw new Error('not json'); } });
+  assert.equal((await submitToScript(buildPayload(validate(ok).clean), cfg(), html)).ok, false);
+  const http = async () => ({ ok: false, status: 500, json: async () => ({}) });
+  assert.equal((await submitToScript(buildPayload(validate(ok).clean), cfg(), http)).ok, false);
+});
+test('submitToScript: a filled honeypot (bot) is dropped without any network call', async () => {
+  let calls = 0;
+  const r = await submitToScript({ ...buildPayload(validate(ok).clean), website: 'http://spam' }, cfg(), async () => { calls++; });
+  assert.equal(calls, 0);
+  assert.equal(r.ok, true);
+});
+
+test('shipped config keeps the Google Form as the fallback', async () => {
   const { RSVP } = await import('../js/config.js');
-  assert.equal(RSVP.USE_EMBED, true);
   assert.match(RSVP.EMBED_URL, /^https:\/\/docs\.google\.com\/forms\/d\/e\/[\w-]+\/viewform\?embedded=true$/);
-  const id = u => u.match(/\/e\/([\w-]+)\//)[1];
-  assert.equal(id(RSVP.EMBED_URL), id(RSVP.FORM_ACTION_URL), 'embed and action point at the same form');
+  assert.match(RSVP.FORM_URL, /^https:\/\/docs\.google\.com\/forms\/d\/e\/[\w-]+\/viewform$/);
 });

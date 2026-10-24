@@ -17,10 +17,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=Parisienne&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <script>document.documentElement.classList.add("js","is-locked")</script>
   <noscript><style>#envelope{display:none!important}</style></noscript>
-  <link rel="stylesheet" href="css/base.css?v=783f69e0">
-  <link rel="stylesheet" href="css/envelope.css?v=783f69e0">
-  <link rel="stylesheet" href="css/story.css?v=783f69e0">
-  <link rel="stylesheet" href="css/sections.css?v=783f69e0">
+  <link rel="stylesheet" href="css/base.css?v=a6e1c0c6">
+  <link rel="stylesheet" href="css/envelope.css?v=a6e1c0c6">
+  <link rel="stylesheet" href="css/story.css?v=a6e1c0c6">
+  <link rel="stylesheet" href="css/sections.css?v=a6e1c0c6">
 </head>
 <body>
 
@@ -173,7 +173,6 @@
   <div class="wrap narrow">
     <p class="eyebrow">Kindly reply</p>
     <h2 id="rsvp-h" class="script h2">Will you celebrate with us?</h2>
-    <p class="banner" id="rsvp-stub" hidden>RSVP is not configured yet (dev only). Nothing will be sent.</p>
     <form id="rsvp-form" novalidate>
       <label class="fld"><span>Your name</span><input name="name" autocomplete="name" required><em class="err" data-for="name"></em></label>
       <label class="fld"><span>Email (for your confirmation)</span><input name="email" type="email" autocomplete="email" inputmode="email" required><em class="err" data-for="email"></em></label>
@@ -185,11 +184,12 @@
       <div class="fld" id="count-wrap"><span>Number of people (including you)</span>
         <div class="stepper"><button type="button" id="dec" aria-label="Fewer">−</button><input id="rsvp-count" name="count" inputmode="numeric" value="1" aria-label="Number of people"><button type="button" id="inc" aria-label="More">+</button></div>
         <em class="err" data-for="count"></em></div>
+      <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
       <button class="btn btn--block" id="rsvp-send" type="submit">Send RSVP</button>
       <p class="thanks" id="rsvp-thanks" role="status" hidden></p>
     </form>
     <div id="rsvp-embed" hidden></div>
-    <p class="rsvp-alt">Form not showing? <a id="rsvp-open" href="https://docs.google.com/forms/d/e/1FAIpQLSfdQ35mvheMZq7Uo9OSvlXBrfrx41Fied0GejkiC5ro1qRNiw/viewform" target="_blank" rel="noopener">Open the RSVP form</a>.</p>
+    <p class="rsvp-alt">Trouble with this form? <a id="rsvp-open" href="https://docs.google.com/forms/d/e/1FAIpQLSfdQ35mvheMZq7Uo9OSvlXBrfrx41Fied0GejkiC5ro1qRNiw/viewform" target="_blank" rel="noopener">Use the Google Form instead</a>.</p>
     <noscript><p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfdQ35mvheMZq7Uo9OSvlXBrfrx41Fied0GejkiC5ro1qRNiw/viewform">RSVP here</a></p></noscript>
   </div>
 </section>
@@ -211,7 +211,7 @@
   <symbol id="i-mandap" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20h32M12 20c0-8 24-8 24 0M24 8v4"/><path d="M12 20v20M36 20v20M8 40h32"/><path d="M24 40c-3-4 0-8 0-8s3 4 0 8z"/></g></symbol>
 </svg>
 
-<script type="module" src="js/main.js?v=783f69e0"></script>
+<script type="module" src="js/main.js?v=a6e1c0c6"></script>
 <script nomodule>var e=document.getElementById("envelope");if(e)e.style.display="none";document.documentElement.classList.remove("is-locked")</script>
 </body>
 </html>

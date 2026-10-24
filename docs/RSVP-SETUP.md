@@ -1,40 +1,22 @@
-# RSVP setup (Google Form + Sheet)
+# RSVP setup
 
-The site's RSVP form posts to a Google Form you own. Responses land in a Google Sheet, and Google emails each guest a copy.
+## How it works
+- The site's themed RSVP form sends each reply to a small **Google Apps Script** that you own. The script adds a row to a Google Sheet and emails the guest a confirmation (with the venue, map link and schedule).
+- Why not submit to the Google Form directly? Google now protects Google Forms with reCAPTCHA, so posts from other websites are refused (HTTP 400/401) and nothing is saved. The script avoids that and lets the site show a real "saved" or "failed" result.
+- Until the script URL is added in `js/config.js` (`RSVP.SCRIPT_URL`), the site embeds the Google Form instead (it records replies itself; the form must allow anonymous replies: Settings > Responses > Collect email addresses = Responder input, Limit to 1 response = OFF).
 
-## 1. Create the form
-1. Go to https://forms.google.com and create a blank form titled "Mahima & Ayush RSVP".
-2. Add exactly these questions, in this order:
-   - **Name** (Short answer, required)
-   - **Attending** (Multiple choice, required). Options must be exactly `Yes` and `No`.
-   - **Number of people** (Short answer, required)
-3. Settings → Responses → **Collect email addresses: Responder input**, and **Send responders a copy of their response: Always**.
-4. Responses tab → **Link to Sheets** → create a new spreadsheet. That is your host dashboard.
+## One-time setup (about 5 minutes)
+1. Create a new Google Sheet (https://sheets.new) and name it "Wedding RSVPs". This is your dashboard.
+2. In the Sheet: **Extensions > Apps Script**. Delete the sample code and paste everything from `apps-script/Code.gs`. Click Save.
+3. **Deploy > New deployment > (gear icon) Web app**. Set **Execute as: Me** and **Who has access: Anyone**. Click Deploy.
+4. When Google asks for permission, choose your account > **Advanced > Go to project (unsafe) > Allow**. (It needs to write to the Sheet and send email as you.)
+5. Copy the **Web app URL** (it ends in `/exec`). Paste it into `js/config.js` as `SCRIPT_URL`, or send it to Claude to do it.
+6. Open the URL in a browser: it should show `{"ok":true,"service":"rsvp"}`.
+7. Test on the site (use a private window), then check the Sheet's **RSVPs** tab for the row and your inbox for the email. Delete the test row.
 
-## 2. Get the IDs
-1. Form menu (⋮) → **Get pre-filled link**. Fill each question with dummy text (use `Yes` for Attending), click **Get link**, copy it.
-2. In the link, note the `entry.NNNN` keys for Name, Attending and Number of people, and the form's `/d/e/<ID>/viewform` part. For Email, the key is `emailAddress`.
-3. Edit `js/config.js`, section `RSVP`:
-   - `FORM_ACTION_URL`: `https://docs.google.com/forms/d/e/<ID>/formResponse`
-   - `FIELD_NAMES`: `{ name: 'entry.NNN', email: 'emailAddress', attending: 'entry.NNN', count: 'entry.NNN' }`
-
-## 3. Test before sharing
-1. Open the site, submit a test RSVP with your own email.
-2. Confirm: (a) a new row appears in the Sheet, (b) you receive Google's confirmation email.
-3. If the row appears but **no email arrives**: set `USE_EMBED: true` and `EMBED_URL` to the form's `viewform?embedded=true` link in `js/config.js`. The plain Google Form is then shown in the page, and Google's receipt is guaranteed.
-4. Delete the test row from the Sheet.
-
-## Gotchas (silent failures)
-The site cannot see Google's reply, so a misconfigured form fails silently and the guest still sees "thank you". Keep these off or unset:
-- "Limit to 1 response" and any sign-in requirement (guests are not signed in).
-- Number validation on "Number of people" that rejects 0 (declines are sent as 0).
-- Do not publish while `js/config.js` still says `REPLACE_ME`.
-
-## Why RSVPs were not recorded (read this if the Sheet stays empty)
-Guests are not signed in to Google, so the form must allow anonymous replies. In the form: **Settings → Responses**
-- **Collect email addresses: Responder input** (NOT "Verified": Verified forces a Google sign-in, so every outside reply is rejected with HTTP 401 and the embed shows "You must sign in").
-- **Send responders a copy of their response: Always** (or "When requested").
-- **Limit to 1 response: OFF** (it also forces sign-in).
-- No "Restrict to users in <organisation>".
-Test in a private/incognito window with no Google login: submit, then check the Sheet and the confirmation email.
-The site embeds Google's own form (js/config.js `USE_EMBED: true`) because Google blocks direct posts from other websites.
+## Good to know
+- Each row records time, name, email, Yes/No, number of people and which link the guest used (full invite or without Mayra).
+- A free Gmail account can send about 100 emails a day. If that is used up the RSVP is still saved (the guest just sees "Your RSVP is saved" without the email line).
+- The same email address is only emailed once every 10 minutes, to stop accidental double sends.
+- Changing the script later: Deploy > Manage deployments > edit > New version (the URL stays the same).
+- Keep `apps-script/Code.gs` event times in sync with `js/config.js` (a test checks this).

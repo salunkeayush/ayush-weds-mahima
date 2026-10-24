@@ -23,28 +23,33 @@ export function validate(input) {
   return { ok: true, errors, clean: { name, email, attending, count } };
 }
 
-export function buildBody(clean, fieldNames) {
-  const b = new URLSearchParams();
-  b.set(fieldNames.name, clean.name);
-  b.set(fieldNames.email, clean.email);
-  b.set(fieldNames.attending, clean.attending === 'yes' ? 'Yes' : 'No');
-  b.set(fieldNames.count, String(clean.count));
-  b.set('emailReceipt', 'true'); // Google's "send me a copy of my responses" checkbox
-  return b;
+// Themed form -> the host's Apps Script web app (writes a row to the Google Sheet and emails the guest).
+const SCRIPT_URL_OK = /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/;
+
+export function rsvpMode(rsvp = RSVP) {
+  return SCRIPT_URL_OK.test(rsvp.SCRIPT_URL || '') ? 'script' : 'embed';
 }
 
-export function isConfigured(rsvp) {
-  const vals = [rsvp.FORM_ACTION_URL, ...Object.values(rsvp.FIELD_NAMES)];
-  return vals.every(v => v && v !== 'REPLACE_ME');
+export function buildPayload(clean, variant) {
+  return {
+    name: clean.name, email: clean.email,
+    attending: clean.attending === 'yes' ? 'Yes' : 'No',
+    count: clean.count, variant: variant === 'core' ? 'core' : 'full', website: '',
+  };
 }
 
-export async function submit(clean, rsvp = RSVP, fetchImpl = (...a) => fetch(...a)) {
-  if (!isConfigured(rsvp)) return { ok: true, stub: true };
-  await fetchImpl(rsvp.FORM_ACTION_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: buildBody(clean, rsvp.FIELD_NAMES),
-  });
-  return { ok: true, stub: false };
+export async function submitToScript(payload, rsvp = RSVP, fetchImpl = (...a) => fetch(...a)) {
+  if (payload.website) return { ok: true, emailed: false }; // honeypot: bots get a fake success, nothing is sent
+  try {
+    const res = await fetchImpl(rsvp.SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // a "simple" request: no CORS preflight
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) return { ok: false, error: `http ${res.status}` };
+    const out = await res.json();
+    return out.ok ? { ok: true, emailed: !!out.emailed } : { ok: false, error: out.error || 'server' };
+  } catch {
+    return { ok: false, error: 'network' };
+  }
 }
