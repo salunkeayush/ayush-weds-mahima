@@ -1,8 +1,8 @@
 import { timeLeft } from './countdown.js';
-import { COUNTDOWN_TARGET } from './config.js';
+import { countdownTargetFor } from './config.js';
 
 export function initReveal() {
-  const target = new Date(COUNTDOWN_TARGET);
+  const target = new Date(countdownTargetFor(document.documentElement.dataset.variant));
   const ids = { days: 'cd-d', hours: 'cd-h', minutes: 'cd-m', seconds: 'cd-s' };
   const done = document.getElementById('cd-done');
   const count = document.getElementById('count');
