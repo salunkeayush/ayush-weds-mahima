@@ -102,7 +102,7 @@ test('the "Malani Family Welcomes You" line is not on the page', () => {
   assert.equal(/malani family/i.test(html), false);
 });
 
-test('the film is the full 37-second 'Just Friends' cut', () => {
+test('the film is the full 37-second Just Friends cut', () => {
   const buf = readFileSync(new URL('../assets/video/story.mp4', import.meta.url));
   const i = buf.indexOf('mvhd');
   assert.ok(i > 0, 'mvhd box found');
