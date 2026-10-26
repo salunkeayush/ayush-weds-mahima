@@ -102,7 +102,7 @@ test('the "Malani Family Welcomes You" line is not on the page', () => {
   assert.equal(/malani family/i.test(html), false);
 });
 
-test('the film is trimmed to 32 seconds', () => {
+test('the film is the full 37-second 'Just Friends' cut', () => {
   const buf = readFileSync(new URL('../assets/video/story.mp4', import.meta.url));
   const i = buf.indexOf('mvhd');
   assert.ok(i > 0, 'mvhd box found');
@@ -111,7 +111,7 @@ test('the film is trimmed to 32 seconds', () => {
   const timescale = buf.readUInt32BE(off);
   const duration = version === 1 ? Number(buf.readBigUInt64BE(off + 4)) : buf.readUInt32BE(off + 4);
   const seconds = duration / timescale;
-  assert.ok(seconds >= 31.5 && seconds <= 32.5, `duration ${seconds}s`);
+  assert.ok(seconds >= 36.5 && seconds <= 38, `duration ${seconds}s`);
 });
 
 test('the hashtag appears in the countdown (reveal) section too', () => {
