@@ -13,7 +13,7 @@ h3{font-family:var(--font-serif);font-weight:600;color:var(--accent);font-size:1
 /* reveal */
 .sec--arch{min-height:100svh;display:grid;align-content:center;background:linear-gradient(#2b2f4d,#1f2131);overflow:hidden}
 .sec--arch .wrap{position:relative}
-.monogram{width:min(68vw,300px);margin:0 auto .6rem;border-radius:50%;box-shadow:0 0 0 2px var(--gold),0 0 0 7px var(--navy-d),0 0 0 8px var(--gold-l),0 18px 40px rgba(0,0,0,.45)}
+.monogram{width:min(62vw,280px);margin:0 auto 1.8rem;border-radius:50%;box-shadow:0 0 0 2px var(--gold),0 0 0 7px var(--navy-d),0 0 0 8px var(--gold-l),0 18px 40px rgba(0,0,0,.45)}
 .divider{display:flex;align-items:center;justify-content:center;gap:1rem;margin:clamp(2.2rem,6vw,3.4rem) auto;max-width:360px;color:var(--gold)}
 .divider i{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-l),transparent)}
 .venue__h{font-size:clamp(2rem,7vw,3.2rem);margin-bottom:.4em}
@@ -88,4 +88,6 @@ address{font-style:normal;margin-bottom:1.4rem}
 .closing{text-align:center;padding:90px var(--gutter) 70px;background:linear-gradient(#2b2f4d,#12142a);color:var(--accent)}
 .closing .serif-i,.closing .script{color:var(--accent)}
 .closing .tag{font-family:var(--font-sans);letter-spacing:.2em;font-size:.85rem;color:var(--gold);margin-top:.6rem}
+.closing .regards{font-family:var(--font-sans);font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-top:1.6rem}
+.closing .signoff{font-size:clamp(2.1rem,9vw,4.6rem);text-wrap:balance}
 .closing .small{margin-top:1.4rem}

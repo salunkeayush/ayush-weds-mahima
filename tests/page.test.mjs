@@ -81,7 +81,7 @@ test('film has no sound or full-screen buttons (sound is always on) and scrolls 
 test('names read "Ayush & Mahima" everywhere, never the old order', () => {
   assert.equal(/Mahima\s*(?:<i>)?&amp;(?:<\/i>)?\s*Ayush/.test(html), false);
   assert.ok(html.includes('Ayush &amp; Mahima'));
-  assert.match(html, /Ayush <i>&amp;<\/i> Mahima/);
+  assert.match(html, /<span>Ayush<\/span> <i>&amp;<\/i> <span>Mahima<\/span>/);
 });
 test('envelope seal is the couple\'s wreath logo image', () => {
   const seal = html.match(/<button class="env__seal"[\s\S]*?<\/button>/)[0];
@@ -106,7 +106,8 @@ test('old story machinery is deleted', () => {
 });
 
 test('the "Malani Family Welcomes You" line is not on the page', () => {
-  assert.equal(/malani family/i.test(html), false);
+  assert.equal(/malani family welcomes you/i.test(html), false);
+  assert.match(html, /Salunke <i>&amp;<\/i> Malani Family/, 'footer is signed by both families');
 });
 
 test('the film is the full 37-second Just Friends cut', () => {
