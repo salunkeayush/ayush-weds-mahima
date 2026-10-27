@@ -15,9 +15,9 @@ function initReveals() {
   els.forEach(e => io.observe(e));
 }
 
-const story = initStory(reduced);
+const story = initStory();
 
-initEnvelope(() => {
+initEnvelope(() => story.prime(), () => {
   const unlock = () => document.documentElement.classList.remove('is-locked');
   let deep = null;
   try { deep = location.hash.length > 1 ? document.querySelector(location.hash) : null; } catch { /* invalid hash */ }

@@ -1,6 +1,7 @@
 // The story is a short film. It plays once when the envelope opens (scroll stays locked until it ends),
-// with Skip, sound, full screen and replay. Reduced-motion guests get native controls and no autoplay.
-export function initStory(reduced) {
+// with Skip, sound, full screen and replay. The end buttons (scroll cue, replay) appear only when the film
+// has finished or been skipped. If the browser refuses to autoplay (iOS Low Power Mode), a Play button shows instead.
+export function initStory() {
   const stage = document.getElementById('story-stage');
   const video = document.getElementById('story-video');
   const skipBtn = document.getElementById('story-skip');
@@ -9,12 +10,13 @@ export function initStory(reduced) {
   const bar = stage.querySelector('.story-bar');
   const barFill = bar.firstElementChild;
   const end = stage.querySelector('.story-end');
-  let onDone = null, finished = false, watchdog = 0;
+  const playBtn = document.getElementById('story-play');
+  let onDone = null, finished = false;
 
   const finish = () => {
     if (finished) return;
     finished = true;
-    clearTimeout(watchdog);
+    playBtn.hidden = true;
     stage.classList.add('is-done');
     skipBtn.hidden = true; bar.hidden = true; end.hidden = false;
     onDone?.();
@@ -23,17 +25,23 @@ export function initStory(reduced) {
     soundBtn.textContent = video.muted ? 'Sound on' : 'Sound off';
     soundBtn.setAttribute('aria-pressed', String(!video.muted));
   };
-  const start = async () => {
+  const attempt = async () => {
     try { video.muted = false; await video.play(); }
-    catch { try { video.muted = true; await video.play(); } catch { finish(); return; } }
+    catch { try { video.muted = true; await video.play(); } catch { return false; } }
+    return true;
+  };
+  const start = async () => {
+    playBtn.hidden = true;
+    const ok = await attempt();
     soundLabel();
-    watchdog = setTimeout(() => { if (video.currentTime < 0.2) finish(); }, 8000);
+    if (!ok && !finished) playBtn.hidden = false;
   };
 
   video.addEventListener('ended', finish);
   video.addEventListener('error', finish);
   video.addEventListener('timeupdate', () => { barFill.style.width = `${(video.currentTime / (video.duration || 1)) * 100}%`; });
   video.addEventListener('click', () => { if (!finished) (video.paused ? video.play() : video.pause()); });
+  playBtn.addEventListener('click', start);
   skipBtn.addEventListener('click', () => { video.pause(); finish(); });
   soundBtn.addEventListener('click', () => { video.muted = !video.muted; soundLabel(); });
   fsBtn.addEventListener('click', () => {
@@ -51,11 +59,13 @@ export function initStory(reduced) {
   soundLabel();
 
   return {
-    play(done) {
-      onDone = done;
-      if (reduced) { video.controls = true; finish(); return; }
-      start();
+    // Called inside the seal tap: iOS only lets a video start if play() runs from a user gesture,
+    // and the film itself starts a couple of seconds later, so unlock the element here.
+    prime() {
+      const unlock = video.play();
+      if (unlock) unlock.then(() => { video.pause(); video.currentTime = 0; }).catch(() => {});
     },
+    play(done) { onDone = done; start(); },
     skip(done) { onDone = done; video.pause(); finish(); },
   };
 }

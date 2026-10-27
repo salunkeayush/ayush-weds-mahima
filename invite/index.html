@@ -17,21 +17,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=Parisienne&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <script>document.documentElement.classList.add("js","is-locked")</script>
   <noscript><style>#envelope{display:none!important}</style></noscript>
-  <link rel="stylesheet" href="../css/base.css?v=43bd3604">
-  <link rel="stylesheet" href="../css/envelope.css?v=43bd3604">
-  <link rel="stylesheet" href="../css/story.css?v=43bd3604">
-  <link rel="stylesheet" href="../css/sections.css?v=43bd3604">
+  <link rel="stylesheet" href="../css/base.css?v=22bc423a">
+  <link rel="stylesheet" href="../css/envelope.css?v=22bc423a">
+  <link rel="stylesheet" href="../css/story.css?v=22bc423a">
+  <link rel="stylesheet" href="../css/sections.css?v=22bc423a">
 </head>
 <body>
 
 <!-- ENVELOPE -->
 <div id="envelope" class="envelope" role="dialog" aria-label="Open your invitation">
-  <p class="envelope__hint">You are invited</p>
+  <p class="envelope__hint script">You&rsquo;re invited</p>
+  <p class="envelope__from serif-i">From Ayush &amp; Mahima</p>
   <div class="env">
     <div class="env__back"></div>
     <div class="env__letter">
-      <span class="script">Ayush &amp; Mahima</span>
-      <span class="serif-i">are getting married</span>
+      <span class="env__kicker">Save the date</span>
+      <span class="script env__names">Ayush &amp; Mahima</span>
+      <span class="env__when">11 &middot; 12 December 2026</span>
+      <span class="serif-i env__where">Nashik</span>
     </div>
     <div class="env__front"></div>
     <div class="env__flap"></div>
@@ -39,7 +42,7 @@
       <img src="../assets/img/seal.webp?v=2" alt="Ayush and Mahima wreath monogram" width="640" height="640" decoding="async">
     </button>
   </div>
-  <p class="envelope__tap">Tap the seal to open</p>
+  <p class="envelope__tap">Tap to open</p>
 </div>
 
 <main id="top">
@@ -56,6 +59,7 @@
         <button type="button" id="story-sound" class="story-btn" aria-pressed="false">Sound on</button>
         <button type="button" id="story-fs" class="story-btn">Full screen</button>
       </div>
+      <button type="button" id="story-play" class="story-btn story-playbtn" hidden>▶ Play the film</button>
       <div class="story-bar" aria-hidden="true"><i></i></div>
       <div class="story-end" hidden><span class="story-cue" aria-hidden="true">Scroll ↓</span><button type="button" id="story-replay" class="story-btn">↺ Replay</button></div>
     </div>
@@ -88,15 +92,15 @@
   </div>
 </section>
 
-<!-- REVEAL -->
+<!-- REVEAL + VENUE -->
 <section id="reveal" class="sec sec--arch" aria-labelledby="reveal-h">
   <div class="florals" aria-hidden="true"></div>
   <div class="wrap center">
+    <img class="monogram reveal" src="../assets/img/logo.webp" alt="Ayush and Mahima monogram in a floral wreath" width="900" height="900" decoding="async">
     <p class="eyebrow">Join us for our wedding</p>
     <h2 id="reveal-h" class="script huge"><span>Ayush</span> <i>&amp;</i> <span>Mahima</span></h2>
     <p class="serif-i">are getting married</p>
     <p class="date">11<sup>th</sup> &amp; 12<sup>th</sup> December 2026</p>
-    <p class="serif-i">Nashik, Maharashtra</p>
     <div class="count" id="count" role="timer" aria-live="off">
       <div><b id="cd-d">--</b><span>days</span></div>
       <div><b id="cd-h">--</b><span>hours</span></div>
@@ -105,16 +109,13 @@
     </div>
     <p class="serif-i" id="cd-done" hidden>Today we celebrate. See you there!</p>
     <p class="hashtag">#AyushMahnbhava</p>
-  </div>
-</section>
-
-<!-- VENUE -->
-<section id="venue" class="sec" aria-labelledby="venue-h">
-  <div class="wrap center">
-    <p class="eyebrow">Venue</p>
-    <h2 id="venue-h" class="script h2">The Democracy Hotel</h2>
-    <address>Ashoknagar, Satpur Colony,<br>Nashik, Maharashtra 422007, India</address>
-    <a class="btn" id="open-maps" href="https://www.google.com/maps/search/?api=1&amp;query=The%20Democracy%20Hotel%2C%20Ashoknagar%2C%20Satpur%20Colony%2C%20Nashik%2C%20Maharashtra%20422007%2C%20India" target="_blank" rel="noopener">Open Maps</a>
+    <div class="divider" aria-hidden="true"><i></i><span>&#10087;</span><i></i></div>
+    <div id="venue" class="venue" role="group" aria-labelledby="venue-h">
+      <p class="eyebrow">Venue</p>
+      <h2 id="venue-h" class="script venue__h">The Democracy Hotel</h2>
+      <address>Ashoknagar, Satpur Colony,<br>Nashik, Maharashtra 422007, India</address>
+      <a class="btn" id="open-maps" href="https://www.google.com/maps/search/?api=1&amp;query=The%20Democracy%20Hotel%2C%20Ashoknagar%2C%20Satpur%20Colony%2C%20Nashik%2C%20Maharashtra%20422007%2C%20India" target="_blank" rel="noopener">Open Maps</a>
+    </div>
   </div>
 </section>
 
@@ -208,7 +209,7 @@
   <symbol id="i-mandap" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20h32M12 20c0-8 24-8 24 0M24 8v4"/><path d="M12 20v20M36 20v20M8 40h32"/><path d="M24 40c-3-4 0-8 0-8s3 4 0 8z"/></g></symbol>
 </svg>
 
-<script type="module" src="../js/main.js?v=43bd3604"></script>
+<script type="module" src="../js/main.js?v=22bc423a"></script>
 <script nomodule>var e=document.getElementById("envelope");if(e)e.style.display="none";document.documentElement.classList.remove("is-locked")</script>
 </body>
 </html>
