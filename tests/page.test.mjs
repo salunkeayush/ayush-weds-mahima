@@ -69,7 +69,14 @@ test('story is the film: autoplay-capable <video> with a poster and a compressed
   assert.ok(existsSync(new URL('../assets/video/story.mp4', import.meta.url)));
   assert.ok(existsSync(new URL('../assets/video/poster.jpg', import.meta.url)));
   assert.ok(statSync(new URL('../assets/video/story.mp4', import.meta.url)).size < 8 * 1024 * 1024, 'film must stay under 8 MB for mobile');
-  assert.ok(html.includes('id="story-skip"') && html.includes('id="story-sound"') && html.includes('id="story-fs"'));
+  assert.ok(html.includes('id="story-skip"'));
+});
+test('film has no sound or full-screen buttons (sound is always on) and scrolls on by itself when it ends', () => {
+  assert.equal(html.includes('story-sound'), false);
+  assert.equal(html.includes('story-fs'), false);
+  const js = readFileSync(new URL('../js/story.js', import.meta.url), 'utf8');
+  assert.equal(/muted\s*=\s*true/.test(js), false, 'never falls back to muted');
+  assert.ok(/'ended'/.test(js) && /scrollIntoView/.test(js), 'ended -> scroll to the next section');
 });
 test('names read "Ayush & Mahima" everywhere, never the old order', () => {
   assert.equal(/Mahima\s*(?:<i>)?&amp;(?:<\/i>)?\s*Ayush/.test(html), false);
