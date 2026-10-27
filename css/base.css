@@ -1,6 +1,6 @@
 :root{
-  --cream:#f6ead9; --paper:#fbf4e8; --blush:#f2c9cc; --rose:#d98c95; --gold:#b98a3c; --gold-l:#e6c98a;
-  --maroon:#6e1a27; --ink:#3b2a2a; --sage:#9fbf86;
+  --cream:#1f2131; --paper:#2a2d45; --navy-d:#15172a; --blush:#303456; --rose:#c8a67c; --gold:#c8a67c; --gold-l:#6a5f4d;
+  --accent:#dcc29c; --ink:#e9dfcf; --sage:#9fbf86;
   --font-script:'Alex Brush','Snell Roundhand',cursive;
   --font-serif:'Libre Caslon Text',Georgia,serif;
   --font-sans:'DM Sans',system-ui,sans-serif;
@@ -12,8 +12,8 @@ body{background:var(--cream);color:var(--ink);font-family:var(--font-serif);font
 html.is-locked body{overflow:hidden;height:100svh}
 [hidden]{display:none!important}
 img{max-width:100%;height:auto;display:block}
-.script{font-family:var(--font-script);font-weight:400;color:var(--maroon);line-height:1.15}
-.serif-i{font-style:italic;color:var(--maroon)}
+.script{font-family:var(--font-script);font-weight:400;color:var(--accent);line-height:1.15}
+.serif-i{font-style:italic;color:var(--accent)}
 .big{font-size:clamp(3rem,12vw,6.5rem)}
 .huge{font-size:clamp(3.2rem,13vw,7.5rem)}
 .h2{font-size:clamp(2.4rem,8vw,4rem);margin-bottom:.6em}
@@ -23,7 +23,7 @@ img{max-width:100%;height:auto;display:block}
 .center{text-align:center}
 .sec{position:relative;padding:clamp(64px,12vw,140px) 0}
 .sec--tint{background:var(--paper)}
-.btn{display:inline-block;font-family:var(--font-sans);font-weight:600;letter-spacing:.08em;font-size:.85rem;text-transform:uppercase;text-decoration:none;color:#fff;background:var(--maroon);border:0;border-radius:999px;padding:.95em 2em;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 18px rgba(110,26,39,.25)}
+.btn{display:inline-block;font-family:var(--font-sans);font-weight:600;letter-spacing:.08em;font-size:.85rem;text-transform:uppercase;text-decoration:none;color:var(--navy-d);background:var(--gold);border:0;border-radius:999px;padding:.95em 2em;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 18px rgba(0,0,0,.4)}
 .btn:hover,.btn:focus-visible{transform:translateY(-2px)}
 .btn[disabled]{opacity:.6;cursor:wait}
 .btn--block{width:100%;margin-top:1rem}
@@ -35,8 +35,8 @@ img{max-width:100%;height:auto;display:block}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .reveal{opacity:1;transform:none}}
 .florals{position:absolute;inset:0;pointer-events:none;background:
   radial-gradient(circle at 8% 6%,var(--blush) 0 8%,transparent 9%),
-  radial-gradient(circle at 14% 3%,#f4b8b8 0 5%,transparent 6%),
+  radial-gradient(circle at 14% 3%,#3b4066 0 5%,transparent 6%),
   radial-gradient(circle at 92% 6%,var(--blush) 0 8%,transparent 9%),
-  radial-gradient(circle at 86% 3%,#f4b8b8 0 5%,transparent 6%),
+  radial-gradient(circle at 86% 3%,#3b4066 0 5%,transparent 6%),
   radial-gradient(circle at 4% 96%,var(--blush) 0 7%,transparent 8%),
   radial-gradient(circle at 96% 96%,var(--blush) 0 7%,transparent 8%);opacity:.8}

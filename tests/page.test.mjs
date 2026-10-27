@@ -126,11 +126,11 @@ test('the hashtag appears in the countdown (reveal) section too', () => {
   assert.ok(reveal.includes('#AyushMahnbhava'));
 });
 
-test('countdown section text uses the maroon of the neighbouring text (date and hashtag, no near-black ink)', () => {
+test('countdown section text uses the accent colour of the neighbouring text (date and hashtag, no near-black ink)', () => {
   const sec = cssFile('sections.css');
   const rule = (sel) => sec.match(new RegExp(`\\${sel}\\{[^}]*\\}`))[0];
-  assert.match(rule('.date'), /color:var\(--maroon\)/);
-  assert.match(rule('.hashtag'), /color:var\(--maroon\)/);
+  assert.match(rule('.date'), /color:var\(--accent\)/);
+  assert.match(rule('.hashtag'), /color:var\(--accent\)/);
 });
 
 import { assetVersion } from '../scripts/stamp.mjs';
@@ -167,4 +167,12 @@ test('RSVP section offers a plain link to the Google Form when the embed cannot 
   const rsvp = html.match(/<section id="rsvp"[\s\S]*?<\/section>/)[0];
   assert.match(rsvp, /<a [^>]*id="rsvp-open"[^>]*href="https:\/\/docs\.google\.com\/forms\/d\/e\/[\w-]+\/viewform"[^>]*target="_blank"/);
   assert.match(rsvp, /<noscript>[\s\S]*viewform/);
+});
+
+test('colour theme is navy and gold (BlueGoldTheme), not the old cream and maroon', () => {
+  const base = cssFile('base.css');
+  assert.match(base, /--cream:\s*#1f2131/i);
+  assert.match(base, /--gold:\s*#c8a67c/i);
+  assert.equal(/--maroon/.test(base), false, 'maroon token renamed to --accent');
+  assert.match(html, /<meta name="theme-color" content="#1f2131">/);
 });

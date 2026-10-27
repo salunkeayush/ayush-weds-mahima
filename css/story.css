@@ -1,16 +1,16 @@
-#story{background:#18120e}
+#story{background:#12141f}
 .story-stage{position:relative;height:100svh;display:grid;place-items:center;overflow:hidden;isolation:isolate}
 .story-stage::before{content:"";position:absolute;inset:-40px;background:url(../assets/video/poster.jpg) center/cover;filter:blur(32px) brightness(.55);z-index:-1}
 .story-video{width:min(100%,calc(100svh*9/16));height:auto;aspect-ratio:9/16;object-fit:contain;display:block;background:#000;cursor:pointer}
 .story-stage:fullscreen,.story-stage:-webkit-full-screen{background:#000}
 .story-stage:fullscreen .story-video,.story-stage:-webkit-full-screen .story-video{height:100%;width:auto;max-width:100%;max-height:none}
 .story-ui{position:absolute;inset:0;pointer-events:none}
-.story-btn{pointer-events:auto;font-family:var(--font-sans);cursor:pointer;background:rgba(251,244,232,.88);border:1px solid var(--gold-l);color:var(--maroon);border-radius:999px;padding:.5em 1.1em;font-size:.78rem;font-weight:600;letter-spacing:.04em}
+.story-btn{pointer-events:auto;font-family:var(--font-sans);cursor:pointer;background:rgba(31,33,49,.82);border:1px solid var(--gold);color:var(--accent);border-radius:999px;padding:.5em 1.1em;font-size:.78rem;font-weight:600;letter-spacing:.04em}
 .story-playbtn{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:1rem;padding:.8em 1.6em}
 .story-skip{position:absolute;top:max(14px,env(safe-area-inset-top));right:14px}
 .story-bar{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.2)}
 .story-bar i{display:block;height:100%;width:0;background:var(--gold-l)}
 .story-end{position:absolute;left:0;right:0;bottom:max(18px,env(safe-area-inset-bottom));display:grid;justify-items:center;gap:.7rem}
-.story-cue{font-family:var(--font-sans);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--maroon);background:rgba(251,244,232,.88);padding:.5em 1.2em;border-radius:999px;animation:cue 1.8s ease-in-out infinite}
+.story-cue{font-family:var(--font-sans);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);background:rgba(31,33,49,.82);padding:.5em 1.2em;border-radius:999px;animation:cue 1.8s ease-in-out infinite}
 @keyframes cue{50%{transform:translateY(6px)}}
 .story-stage.is-done @media (prefers-reduced-motion:reduce){.story-cue{animation:none}}
