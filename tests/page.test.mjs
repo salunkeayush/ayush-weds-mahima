@@ -82,9 +82,9 @@ test('envelope seal is the couple\'s wreath logo image', () => {
   assert.equal(seal.includes('<svg'), false);
   assert.ok(existsSync(new URL('../assets/img/seal.webp', import.meta.url)));
 });
-test('script font has a clear capital A (Parisienne) and Great Vibes is gone', () => {
-  assert.match(cssFile('base.css'), /--font-script:\s*'Parisienne'/);
-  assert.ok(html.includes('family=Parisienne'));
+test('fonts are Alex Brush (script), Libre Caslon Text (serif) and DM Sans (sans); Parisienne is gone', () => {
+  assert.match(cssFile('base.css'), /--font-script:\s*'Alex Brush'/);
+  assert.ok(html.includes('family=Alex+Brush') && !html.includes('Parisienne'));
   assert.equal(html.includes('Great+Vibes'), false);
 });
 test('venue: map and tap-a-spot explorer are gone, address and Open Maps stay', () => {
