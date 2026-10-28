@@ -38,7 +38,7 @@ export const EVENTS = [
 // Links: the full invite (site root) and an invite without Mayra (its own folder, built by `npm run build`).
 export const VARIANTS = {
   full: { dir: '', exclude: [] },
-  'core': { dir: 'invite', exclude: ['mayra'] },
+  'core': { dir: 'invite', exclude: ['mayra'], signoff: 'Salunke <i>&amp;</i> Malani Family' },
 };
 const variantOf = id => VARIANTS[id] || VARIANTS.full;
 export const eventsFor = id => EVENTS.filter(e => !variantOf(id).exclude.includes(e.id));

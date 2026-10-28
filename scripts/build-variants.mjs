@@ -10,6 +10,7 @@ export function buildVariantHtml(html, id) {
   if (!v || !v.dir) throw new Error(`no folder for variant "${id}"`);
   return html
     .replace(/<!--only:full-->[\s\S]*?<!--\/only:full-->\s*/g, '')
+    .replace(/<!--signoff-->[\s\S]*?<!--\/signoff-->/, v.signoff ?? '$&')
     .replace('<html lang="en">', `<html lang="en" data-variant="${id}">`)
     .replace(/(src|href|poster)="(css|js|assets)\//g, '$1="../$2/')
     .replace(/(og:url" content="[^"]*ayush-weds-mahima\/)"/, `$1${v.dir}/"`);

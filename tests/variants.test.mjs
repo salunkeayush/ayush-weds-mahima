@@ -67,3 +67,11 @@ test('the schedule tells guests they can tap an event icon for details (both lin
     assert.ok(sched.indexOf('sched-hint') < sched.indexOf('class="days"'), 'hint sits above the events');
   }
 });
+
+test('footer sign-off: full link says Malani & Salunke Family, the /invite link says Salunke & Malani Family', () => {
+  assert.match(full, /<p class="script signoff"><!--signoff-->Malani <i>&amp;<\/i> Salunke Family<!--\/signoff--><\/p>/);
+  const core = buildVariantHtml(full, 'core');
+  assert.match(core, /<p class="script signoff">Salunke <i>&amp;<\/i> Malani Family<\/p>/);
+  assert.equal(core.includes('Malani <i>&amp;</i> Salunke'), false);
+  assert.equal(core.includes('signoff-->'), false);
+});

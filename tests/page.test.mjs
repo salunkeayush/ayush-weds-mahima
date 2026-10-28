@@ -107,10 +107,10 @@ test('old story machinery is deleted', () => {
 
 test('the "Malani Family Welcomes You" line is not on the page', () => {
   assert.equal(/malani family welcomes you/i.test(html), false);
-  assert.match(html, /Salunke <i>&amp;<\/i> Malani Family/, 'footer is signed by both families');
+  assert.match(html, /Malani <i>&amp;<\/i> Salunke Family/, 'full link footer reads Malani & Salunke Family');
 });
 
-test('the film is the full 38-second Just Friends cut', () => {
+test('the film is the full 39-second final film', () => {
   const buf = readFileSync(new URL('../assets/video/story.mp4', import.meta.url));
   const i = buf.indexOf('mvhd');
   assert.ok(i > 0, 'mvhd box found');
@@ -119,7 +119,7 @@ test('the film is the full 38-second Just Friends cut', () => {
   const timescale = buf.readUInt32BE(off);
   const duration = version === 1 ? Number(buf.readBigUInt64BE(off + 4)) : buf.readUInt32BE(off + 4);
   const seconds = duration / timescale;
-  assert.ok(seconds >= 37 && seconds <= 39, `duration ${seconds}s`);
+  assert.ok(seconds >= 38 && seconds <= 40, `duration ${seconds}s`);
 });
 
 test('the hashtag appears in the countdown (reveal) section too', () => {
