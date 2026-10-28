@@ -188,3 +188,11 @@ test('"Little things about us" is a polaroid wall: four taped polaroids with han
   assert.match(cssFile('base.css'), /--font-hand:\s*'Caveat'/);
   assert.equal(about.includes('class="cards"'), false);
 });
+
+test('link preview (WhatsApp etc.) uses the navy name card, with size and Twitter tags', () => {
+  assert.match(html, /og:image" content="https:\/\/salunkeayush\.github\.io\/ayush-weds-mahima\/assets\/og-card\.jpg"/);
+  assert.ok(existsSync(new URL('../assets/og-card.jpg', import.meta.url)));
+  assert.ok(statSync(new URL('../assets/og-card.jpg', import.meta.url)).size < 300 * 1024, 'preview image stays small');
+  assert.ok(html.includes('og:image:width" content="1200"') && html.includes('og:image:height" content="630"'));
+  assert.ok(html.includes('name="twitter:card" content="summary_large_image"'));
+});
