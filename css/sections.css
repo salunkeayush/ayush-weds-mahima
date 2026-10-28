@@ -1,15 +1,18 @@
 h3{font-family:var(--font-serif);font-weight:600;color:var(--accent);font-size:1.4rem}
 .small{font-size:.9rem;opacity:.8}
 /* about */
-.cards{display:grid;gap:22px;grid-template-columns:1fr}
-.card{background:var(--paper);border-radius:18px;overflow:hidden;box-shadow:0 12px 34px rgba(0,0,0,.35);display:grid}
-.card img{width:100%;aspect-ratio:4/3;object-fit:cover}
-.card img.foodie{aspect-ratio:4/5;object-position:50% 40%}
-.card>div{padding:1.1rem 1.3rem 1.4rem}
-.card p{margin-top:.4rem}
-.card--barca{border-top:6px solid transparent;border-image:linear-gradient(90deg,#a50044 50%,#004d98 50%) 1}
-@media (min-width:700px){.cards{grid-template-columns:1fr 1fr}}
-@media (min-width:1000px){.cards{grid-template-columns:repeat(4,1fr)}}
+.pol{display:grid;gap:44px 20px;grid-template-columns:1fr;justify-items:center;padding-top:14px}
+.pw{width:min(100%,320px)}
+.pc{position:relative;background:#f3ead9;color:#1f2131;padding:10px 10px 16px;border-radius:3px;box-shadow:0 16px 30px rgba(0,0,0,.5);transition:transform .35s;transform:rotate(var(--tilt,0deg))}
+.pc::before{content:"";position:absolute;top:-12px;left:50%;width:86px;height:24px;margin-left:-43px;background:rgba(200,166,124,.78);transform:rotate(-3deg)}
+.pc img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:1px;background:#d9cfbd}
+.pc figcaption{font-family:var(--font-hand);font-size:1.32rem;line-height:1.15;margin-top:11px;text-align:center}
+.pc figcaption b{display:block;font-weight:700;font-size:1.6rem;margin-bottom:2px}
+.pw:nth-child(1) .pc{--tilt:-3deg}.pw:nth-child(2) .pc{--tilt:2.5deg}.pw:nth-child(3) .pc{--tilt:-2deg}.pw:nth-child(4) .pc{--tilt:3deg}
+.pw:nth-child(1) img{aspect-ratio:1}
+.pc:hover,.pc:focus-within{transform:rotate(0) scale(1.03)}
+@media (min-width:700px){.pol{grid-template-columns:1fr 1fr;gap:56px 28px;align-items:start}.pw:nth-child(even){margin-top:28px}}
+@media (min-width:1000px){.pol{grid-template-columns:repeat(4,1fr)}}
 /* reveal */
 .sec--arch{min-height:100svh;display:grid;align-content:center;background:linear-gradient(#2b2f4d,#1f2131);overflow:hidden}
 .sec--arch .wrap{position:relative}

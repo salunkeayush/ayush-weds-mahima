@@ -3,6 +3,7 @@
   --accent:#dcc29c; --ink:#e9dfcf; --sage:#9fbf86;
   --font-script:'Alex Brush','Snell Roundhand',cursive;
   --font-serif:'Libre Caslon Text',Georgia,serif;
+  --font-hand:'Caveat','Bradley Hand',cursive;
   --font-sans:'DM Sans',system-ui,sans-serif;
   --gutter:max(16px,env(safe-area-inset-left));
 }

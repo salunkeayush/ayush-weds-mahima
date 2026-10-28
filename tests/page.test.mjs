@@ -177,3 +177,12 @@ test('colour theme is navy and gold (BlueGoldTheme), not the old cream and maroo
   assert.equal(/--maroon/.test(base), false, 'maroon token renamed to --accent');
   assert.match(html, /<meta name="theme-color" content="#1f2131">/);
 });
+
+test('"Little things about us" is a polaroid wall: four taped polaroids with handwritten captions', () => {
+  const about = html.match(/<section id="about"[\s\S]*?<\/section>/)[0];
+  assert.equal((about.match(/<figure class="pc"/g) || []).length, 4);
+  for (const img of ['coffee', 'sand-selfie', 'foodie', 'jerseys']) assert.ok(about.includes(`assets/img/${img}.webp`), img);
+  assert.ok(html.includes('family=Caveat'), 'handwriting font loaded');
+  assert.match(cssFile('base.css'), /--font-hand:\s*'Caveat'/);
+  assert.equal(about.includes('class="cards"'), false);
+});
