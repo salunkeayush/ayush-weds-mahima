@@ -44,8 +44,10 @@ export function initStory() {
 
   return {
     // Called inside the seal tap: iOS only lets a video start if play() runs from a user gesture,
-    // and the film itself starts a couple of seconds later, so unlock the element here.
+    // and the film itself starts a couple of seconds later, so unlock the element here. Muted, so
+    // nothing is heard behind the envelope; start() turns the sound on when the film really begins.
     prime() {
+      video.muted = true;
       const unlock = video.play();
       if (unlock) unlock.then(() => { video.pause(); video.currentTime = 0; }).catch(() => {});
     },

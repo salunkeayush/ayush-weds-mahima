@@ -75,7 +75,9 @@ test('film has no sound or full-screen buttons (sound is always on) and scrolls 
   assert.equal(html.includes('story-sound'), false);
   assert.equal(html.includes('story-fs'), false);
   const js = readFileSync(new URL('../js/story.js', import.meta.url), 'utf8');
-  assert.equal(/muted\s*=\s*true/.test(js), false, 'never falls back to muted');
+  assert.equal(/catch[^}]*muted\s*=\s*true/.test(js), false, 'never falls back to muted');
+  const prime = js.match(/prime\(\)\s*\{[\s\S]*?\n    \},/)[0];
+  assert.match(prime, /muted\s*=\s*true/, 'the unlock on tap is silent, so no sound plays behind the envelope');
   assert.ok(/'ended'/.test(js) && /scrollIntoView/.test(js), 'ended -> scroll to the next section');
 });
 test('names read "Ayush & Mahima" everywhere, never the old order', () => {
