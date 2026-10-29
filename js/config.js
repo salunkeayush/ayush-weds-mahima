@@ -29,7 +29,7 @@ export const EVENTS = [
     dressCode: 'Royal Indian attire (timeless saris, elegant lehengas, classic sherwanis).',
     palette: ['#E8DDE0', '#D5E3D3', '#E5C7D2', '#A8D1B5', '#B79ACB', '#7FA7D9', '#5F7F68'], paletteName: 'Pastel & Pearl',
     blurb: 'The baarat arrives, the celebration begins' },
-  { id: 'phere', startISO: '2026-12-12T16:00:00+05:30', name: 'Phere & Saptasadi', date: 'Saturday, 12th December', dateISO: '2026-12-12',
+  { id: 'phere', startISO: '2026-12-12T16:00:00+05:30', name: 'Phere & Saptapadi', date: 'Saturday, 12th December', dateISO: '2026-12-12',
     time: '4:00 PM', spot: 'Ganga Ghat Amphitheater', spotId: 'ganga-ghat-amphitheater',
     dressCode: 'Indian traditional (lehenga, sharara, saree, anarkali, kurta).', palette: [],
     blurb: 'Seven steps, seven promises' },

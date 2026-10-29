@@ -200,11 +200,11 @@ test('link preview (WhatsApp etc.) uses the navy name card, with size and Twitte
   assert.ok(html.includes('name="twitter:card" content="summary_large_image"'));
 });
 
-test('the event is spelled Saptasadi, never Saptapati, on the site and in the email script', () => {
+test('the event is spelled Saptapadi, never Saptapati or Saptasadi, on the site and in the email script', () => {
   const gs = readFileSync(new URL('../apps-script/Code.gs', import.meta.url), 'utf8');
   const cfg = readFileSync(new URL('../js/config.js', import.meta.url), 'utf8');
   for (const [where, text] of [['index.html', html], ['Code.gs', gs], ['config.js', cfg]]) {
-    assert.equal(/Saptapati/i.test(text), false, where);
-    assert.ok(/Saptasadi/.test(text), where);
+    assert.equal(/Saptapati|Saptasadi/i.test(text), false, where);
+    assert.ok(/Saptapadi/.test(text), where);
   }
 });

@@ -18,7 +18,7 @@ var EVENTS = [
   { id: 'haldi', name: 'Haldi', when: 'Friday 11 Dec, 3:00 PM', where: 'Poolside Lawn' },
   { id: 'sangeet', name: 'Sangeet', when: 'Friday 11 Dec, 7:30 PM', where: 'Congruence Convention Hall' },
   { id: 'reception', name: 'Baarat Swaagat & Reception', when: 'Saturday 12 Dec, 11:00 AM', where: 'Congruence Convention Hall' },
-  { id: 'phere', name: 'Phere & Saptasadi', when: 'Saturday 12 Dec, 4:00 PM', where: 'Ganga Ghat Amphitheater' }
+  { id: 'phere', name: 'Phere & Saptapadi', when: 'Saturday 12 Dec, 4:00 PM', where: 'Ganga Ghat Amphitheater' }
 ];
 
 function eventsForVariant(variant) {
