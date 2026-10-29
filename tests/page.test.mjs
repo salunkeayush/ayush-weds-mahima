@@ -80,10 +80,11 @@ test('film has no sound or full-screen buttons (sound is always on) and scrolls 
   assert.match(prime, /muted\s*=\s*true/, 'the unlock on tap is silent, so no sound plays behind the envelope');
   assert.ok(/'ended'/.test(js) && /scrollIntoView/.test(js), 'ended -> scroll to the next section');
 });
-test('names read "Ayush & Mahima" everywhere, never the old order', () => {
-  assert.equal(/Mahima\s*(?:<i>)?&amp;(?:<\/i>)?\s*Ayush/.test(html), false);
-  assert.ok(html.includes('Ayush &amp; Mahima'));
-  assert.match(html, /<span>Ayush<\/span> <i>&amp;<\/i> <span>Mahima<\/span>/);
+test('full link names read "Mahima & Ayush" everywhere, never the other order', () => {
+  assert.equal(/Ayush\s*(?:<i>)?&amp;(?:<\/i>)?\s*Mahima/.test(html), false);
+  assert.ok(html.includes('Mahima &amp; Ayush'));
+  assert.match(html, /<span>Mahima<\/span> <i>&amp;<\/i> <span>Ayush<\/span>/);
+  assert.equal(/Ayush and Mahima/.test(html), false);
 });
 test('envelope seal is the couple\'s wreath logo image', () => {
   const seal = html.match(/<button class="env__seal"[\s\S]*?<\/button>/)[0];
@@ -190,9 +191,20 @@ test('"Little things about us" is a polaroid wall: four taped polaroids with han
 });
 
 test('link preview (WhatsApp etc.) uses the navy name card, with size and Twitter tags', () => {
-  assert.match(html, /og:image" content="https:\/\/salunkeayush\.github\.io\/ayush-weds-mahima\/assets\/og-card\.jpg"/);
-  assert.ok(existsSync(new URL('../assets/og-card.jpg', import.meta.url)));
-  assert.ok(statSync(new URL('../assets/og-card.jpg', import.meta.url)).size < 300 * 1024, 'preview image stays small');
+  assert.match(html, /og:image" content="https:\/\/salunkeayush\.github\.io\/ayush-weds-mahima\/assets\/og-card-full\.jpg"/);
+  for (const f of ['og-card.jpg', 'og-card-full.jpg']) {
+    assert.ok(existsSync(new URL('../assets/' + f, import.meta.url)), f);
+    assert.ok(statSync(new URL('../assets/' + f, import.meta.url)).size < 300 * 1024, 'preview image stays small');
+  }
   assert.ok(html.includes('og:image:width" content="1200"') && html.includes('og:image:height" content="630"'));
   assert.ok(html.includes('name="twitter:card" content="summary_large_image"'));
+});
+
+test('the event is spelled Saptasadi, never Saptapati, on the site and in the email script', () => {
+  const gs = readFileSync(new URL('../apps-script/Code.gs', import.meta.url), 'utf8');
+  const cfg = readFileSync(new URL('../js/config.js', import.meta.url), 'utf8');
+  for (const [where, text] of [['index.html', html], ['Code.gs', gs], ['config.js', cfg]]) {
+    assert.equal(/Saptapati/i.test(text), false, where);
+    assert.ok(/Saptasadi/.test(text), where);
+  }
 });

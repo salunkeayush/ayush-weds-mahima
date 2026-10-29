@@ -75,3 +75,15 @@ test('footer sign-off: full link says Malani & Salunke Family, the /invite link 
   assert.equal(core.includes('Malani <i>&amp;</i> Salunke'), false);
   assert.equal(core.includes('signoff-->'), false);
 });
+
+test('name order: full link says Mahima & Ayush everywhere, /invite says Ayush & Mahima everywhere', () => {
+  const core = buildVariantHtml(full, 'core');
+  assert.equal(/Ayush\s*(?:<i>)?&amp;(?:<\/i>)?\s*Mahima|Ayush and Mahima/.test(full), false);
+  assert.equal(/Mahima\s*(?:<i>)?&amp;(?:<\/i>)?\s*Ayush|Mahima and Ayush/.test(core), false);
+  assert.match(core, /<title>Ayush &amp; Mahima/);
+  assert.match(core, /<span>Ayush<\/span> <i>&amp;<\/i> <span>Mahima<\/span>/);
+  assert.match(core, /From Ayush &amp; Mahima/);
+  assert.match(full, /From Mahima &amp; Ayush/);
+  assert.ok(core.includes('assets/og-card.jpg') && !core.includes('og-card-full'));
+  assert.ok(full.includes('assets/og-card-full.jpg'));
+});

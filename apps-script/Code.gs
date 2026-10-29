@@ -18,7 +18,7 @@ var EVENTS = [
   { id: 'haldi', name: 'Haldi', when: 'Friday 11 Dec, 3:00 PM', where: 'Poolside Lawn' },
   { id: 'sangeet', name: 'Sangeet', when: 'Friday 11 Dec, 7:30 PM', where: 'Congruence Convention Hall' },
   { id: 'reception', name: 'Baarat Swaagat & Reception', when: 'Saturday 12 Dec, 11:00 AM', where: 'Congruence Convention Hall' },
-  { id: 'phere', name: 'Phere & Saptapati', when: 'Saturday 12 Dec, 4:00 PM', where: 'Ganga Ghat Amphitheater' }
+  { id: 'phere', name: 'Phere & Saptasadi', when: 'Saturday 12 Dec, 4:00 PM', where: 'Ganga Ghat Amphitheater' }
 ];
 
 function eventsForVariant(variant) {
@@ -46,8 +46,13 @@ function validateRsvp(body) {
   return { ok: true, honeypot: !!body.website, data: { name: name, email: email, attending: attending, count: count, variant: variant } };
 }
 
+function coupleNames(variant) {
+  return variant === 'core' ? 'Ayush & Mahima' : 'Mahima & Ayush'; // same order as the link the guest used
+}
+
 function buildEmail(d) {
-  var subject = "Your RSVP for Ayush & Mahima's wedding";
+  var couple = coupleNames(d.variant);
+  var subject = 'Your RSVP for ' + couple + "'s wedding";
   var lines = [];
   var rows = [];
   if (d.attending === 'Yes') {
@@ -57,12 +62,12 @@ function buildEmail(d) {
       lines.push('- ' + e.name + ': ' + e.when + ', ' + e.where);
       rows.push('<li><b>' + esc(e.name) + '</b> &middot; ' + esc(e.when) + ' &middot; ' + esc(e.where) + '</li>');
     });
-    lines.push('', 'We cannot wait to celebrate with you! #AyushMahnbhava', '', 'Ayush & Mahima');
+    lines.push('', 'We cannot wait to celebrate with you! #AyushMahnbhava', '', couple);
   } else {
-    lines.push('Thank you for letting us know, ' + d.name + '. We will miss you at the wedding, and we are grateful for your good wishes.', '', 'Ayush & Mahima');
+    lines.push('Thank you for letting us know, ' + d.name + '. We will miss you at the wedding, and we are grateful for your good wishes.', '', couple);
   }
   var html = '<div style="font-family:Georgia,serif;color:#3b2a2a;max-width:520px;line-height:1.5">' +
-    '<h2 style="color:#6e1a27;font-weight:normal">Ayush &amp; Mahima</h2>' +
+    '<h2 style="color:#6e1a27;font-weight:normal">' + esc(couple) + '</h2>' +
     (d.attending === 'Yes'
       ? '<p>Thank you, <b>' + esc(d.name) + '</b>! We have your RSVP: joyfully accepted for <b>' + d.count + (d.count === 1 ? ' guest' : ' guests') + '</b>.</p>' +
         '<p>11th &amp; 12th December 2026<br>' + esc(VENUE.name) + ', ' + esc(VENUE.address) + '<br><a href="' + VENUE.maps + '">Open in Google Maps</a></p>' +
@@ -111,7 +116,7 @@ function sendConfirmation_(d) {
     var key = 'mail:' + d.email;
     if (cache.get(key)) return { sent: false, why: 'recent' }; // same address within 10 minutes: recorded, not emailed again
     var m = buildEmail(d);
-    MailApp.sendEmail({ to: d.email, subject: m.subject, body: m.text, htmlBody: m.html, name: 'Ayush & Mahima' });
+    MailApp.sendEmail({ to: d.email, subject: m.subject, body: m.text, htmlBody: m.html, name: coupleNames(d.variant) });
     cache.put(key, '1', 600);
     return { sent: true, why: 'sent' };
   } catch (err) {

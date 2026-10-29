@@ -30,11 +30,12 @@ test('unknown link variants fall back to full; a filled honeypot is flagged', ()
 });
 test('confirmation email: personal, escapes HTML, lists the right events', () => {
   const full = buildEmail(validateRsvp(good).data);
-  assert.match(full.subject, /Ayush & Mahima/);
+  assert.match(full.subject, /Mahima & Ayush/);
   assert.match(full.text, /Asha Rao/); assert.match(full.text, /3/);
   assert.match(full.text, /Mayra/); assert.match(full.html, /Congruence Convention Hall/);
   assert.match(full.html, /google\.com\/maps\/search/);
   const core = buildEmail(validateRsvp({ ...good, variant: 'core' }).data);
+  assert.match(core.subject, /Ayush & Mahima/);
   assert.equal(/mayra/i.test(core.text + core.html), false);
   const xss = buildEmail(validateRsvp({ ...good, name: '<script>alert(1)</script>' }).data);
   assert.equal(xss.html.includes('<script>'), false);
